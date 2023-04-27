@@ -4,30 +4,40 @@
 
 ## About This Package
 
-**Laravel API Endpoints** is a complete authentication and account recovery package developed on the top of the [Laravel Sanctum](https://laravel.com/docs/9.x/sanctum). This package is completely compatible with [sveltekit-admin-starter](https://github.com/theUIxyz/sveltekit-admin-starter). In other word, this Laravel package has been developed for [sveltekit-admin-starter](https://github.com/theUIxyz/sveltekit-admin-starter) but perfect for any thechnology that uses the REST API endpoints.
+**Laravel API Endpoints** is a comprehensive starter-kit designed for authentication and account recovery, built on the [Laravel Sanctum](https://laravel.com/docs/10.x/sanctum) framework. This package is fully compatible with the [sveltekit-dashboard-starter](https://github.com/theui-dev/sveltekit-dashboard-starter) for a seamless user experience.
+
+
+**Laravel API Endpoints** is a complete authentication and account recovery starter-kit developed on the top of the [Laravel Sanctum](https://laravel.com/docs/10.x/sanctum). This package is completely compatible with [sveltekit-dashboard-starter](https://github.com/theui-dev/sveltekit-dashboard-starter).
 
 <br>
 
 ## Features
-This package includes the following features:
-- Secure login/logout
-- Registratin
-- Mobile number verification with OTP
-- Email verification
-- Easy to understand response and error messages
+This package encompasses a range of features, including but not limited to:
+- User registration.
+- Email verification.
+- Secure login options via either email or mobile number.
+- Logout.
+- Mobile number verification utilizing OTP.
+- Activity logs based on user and associated actions.
+- Support for localization.
+- User-friendly response and error messaging.
 
 <br>
 
 ## API Endpoints
 It includes the following endpoints:
 
-| Details                 | Method | API End Points             |
-| ----------------------- | ------ | -------------------------- |
-| Registration            | POST   | [/register](#)             |
-| Login                   | POST   | [/login](#)                |
-| Password reset request  | POST   | [/password-reset](#)       |
-| Password reset          | POST   | [/reset-password](#)       |
-| Logout                  | GET    | [/logout](#)               |
+| Details                 | Method | API End Points                 |
+| ----------------------- | ------ | ------------------------------ |
+| Registration            | POST   | [/register](#)                 |
+| Email verification link | POST   | [/email-verification](#)       |
+| Email verification      | POST   | [/verify-email/{id}/{hash}](#) |
+| Mobile verification OTP | POST   | [/verification-otp](#)         |
+| Mobile verification     | POST   | [/verify-mobile](#)            |
+| Login                   | POST   | [/login](#)                    |
+| Password reset request  | POST   | [/password-reset](#)           |
+| Change Password         | POST   | [/reset-password](#)           |
+| Logout                  | GET    | [/logout](#)                   |
 
 <br>
 
@@ -69,7 +79,57 @@ Response
   },
   "token": "1|qaPeBQyYYYIFDZZ8JPS7OOFONWy1LlgHSg5EzsW8",
   "success": true,
-  "message": "Account created successfully"
+  "message": "Account created successfully!"
+}
+```
+
+<br>
+
+### Send email verification link
+
+> *Upon completing your registration, an email verification link will be automatically generated and sent to your registered email address. However, in the event that you require manual or second-time verification, you may utilize this end-point.*<br><br>Request Method: **POST** <br> Endpoint: **/email-verification**
+
+Request Body
+```js
+{
+	"email": "user1@email.com"
+}
+```
+Request Header
+```js
+{
+  "Content-Type": "application/json"
+  "Accept": "application/json",
+  'Authorization': "Bearer <SANCTUM_AUTH_TOKEN>"
+}
+```
+Response
+```js
+{
+	"success": true,
+	"message": "An email verification link has been sent to your inbox. Please check your email and follow the instructions to complete the verification process."
+}
+```
+
+<br>
+
+### Verify Email
+
+> *By utilizing this end-point, the user account associated with the provided email address can be verified via the URL sent for verification purposes.*<br><br>Request Method: **POST** <br> Endpoint: **/verify-email/{id}/{hash}**
+
+Request Header
+```js
+{
+  "Content-Type": "application/json"
+  "Accept": "application/json",
+  'Authorization': "Bearer <SANCTUM_AUTH_TOKEN>"
+}
+```
+Response
+```js
+{
+	"success": true,
+	"message": "Your email has been successfully confirmed!"
 }
 ```
 
@@ -122,7 +182,7 @@ Request Body
   "userID": "user1@email.com", // or 01717000000
 }
 ```
-> User can use either Email or mobile number as `userID`. User will receive the OTP either in the email or in their mobile depending on the `userID`
+> You may choose to use either your email or mobile number as your `userID` during login. In both cases, a four to eight digit OTP will be sent to you via either email or mobile, depending on the chosen `userID`.
 
 Request Header
 ```js
@@ -148,13 +208,13 @@ Response
 Request Body
 ```js
 {
-  "otp": "290479",
-  "password" : "password1", // New password
-  "password_confirmation" : "password1", // New password confirmation
+  "otp": "123456",
+  "password" : "password2", // New password
+  "password_confirmation" : "password2", // New password confirmation
   "token": "3b1c32e4-8729-481a-8de2-27e3287f8ac3"
 }
 ```
-> Token will be generated while hitting the `password-reset` endpoints.
+> Will be added automatically with the password reset request.
 
 Request Header
 ```js
@@ -167,7 +227,7 @@ Response
 ```js
 {
   "success": true,
-  "message": "Password updated successfully! Login to your account"
+  "message": "Password updated successfully! Login to your account to continue."
 }
 ```
 
@@ -182,10 +242,32 @@ Request Header
 {
   "Content-Type": "application/json"
   "Accept": "application/json",
-  'Authorization': "Bearer SANCTUM_AUTH_TOKEN"
+  'Authorization': "Bearer <SANCTUM_AUTH_TOKEN>"
 }
 ```
 > Replace **SANCTUM_AUTH_TOKEN** with real token
+
+<br>
+
+## Customization (.env)
+To tailor the Laravel API Endpoints to suit your particular use case, please modify the following ENV variables accordingly:
+
+| Details                       | Value | API End Points                 |
+| ----------------------------- | ------- | ------------------------------ |
+| SITE_URL                      | "https://www.mbparvez.me"         | URL of the website where the API will be utilized. |
+| EMAIL_VERIFICATION_URL        | "${SITE_URL}/verify?verify_url="  | Email verification URL of the website. |
+| MOBILE_NUMBER_REQUIRED        | *true/false*<br>Default: *true*  | Specify whether a mobile number is required for registration or not. |
+| OTP_NUMBER_LENGTH             | 4 to 8<br>Default: 6     | Length of the OTP |
+| OTP_EXPIRE_TIME               | 300   | Duration of the OTP expiration in seconds |
+| ** VERIFY_USER_BY             | "email"       | -- |
+| MONTHLY_PASSWORD_RESET_LIMIT  | 15    | Maximum monthly limit for password reset. |
+| WEEKLY_PASSWORD_RESET_LIMIT   | 6     | Maximum weekly limit for password reset. |
+| DAILY_PASSWORD_RESET_LIMIT    | 3     | Maximum daily limit for password reset. |
+| INFOBIP_BASE_URL              | Null  | Infobip API URL |
+| INFOBIP_TIMEOUT               | Null  | Infobip request timeout |
+| INFOBIP_API_KEY               | Null  | Infobip API key |
+
+<br>
 
 ## Copyright and license
 

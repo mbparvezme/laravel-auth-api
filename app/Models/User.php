@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Hash;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -21,8 +21,8 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'mobile',
         'password',
+        'mobile',
         'country',
         'country_code'
     ];
@@ -48,7 +48,7 @@ class User extends Authenticatable
     ];
 
     public function setPasswordAttribute($password)
-    {   
+    {
         $this->attributes['password'] = Hash::make($password);
     }
 }

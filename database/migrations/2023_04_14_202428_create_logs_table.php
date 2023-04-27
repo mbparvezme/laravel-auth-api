@@ -8,15 +8,13 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('logs', function (Blueprint $table) {
             $table->id();
             $table->tinyText('user', 10);
-            $table->string('action', 20);
+            $table->string('action', 32);
             $table->json('data');
             $table->timestamps();
             $table->dropColumn('updated_at');
@@ -25,10 +23,8 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('logs');
     }

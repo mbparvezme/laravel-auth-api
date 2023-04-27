@@ -8,13 +8,11 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('mobile', 11)->after('email')->unique('users_mobile_unique');
+            $table->string('mobile', 11)->after('email')->unique()->nullable();
             $table->timestamp('mobile_verified_at')->after('email_verified_at')->nullable();
             $table->string('country', 3)->after('remember_token');
             $table->string('country_code', 3)->after('country');
@@ -23,14 +21,14 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('mobile');
             $table->dropColumn('mobile_verified_at');
+            $table->dropColumn('country');
+            $table->dropColumn('country_code');
         });
     }
 };

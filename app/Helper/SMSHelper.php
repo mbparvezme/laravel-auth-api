@@ -2,14 +2,16 @@
 
 namespace App\Helper;
 
-use Dotenv\Util\Str;
 use Exception;
+
+use Infobip\ApiException;
 use Infobip\Configuration;
 use Infobip\Api\SendSmsApi;
 use Infobip\Model\SmsDestination;
 use Infobip\Model\SmsTextualMessage;
 use Infobip\Model\SmsAdvancedTextualRequest;
 use GuzzleHttp\Client;
+
 
 class SMSHelper
 {

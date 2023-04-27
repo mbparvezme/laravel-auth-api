@@ -9,10 +9,8 @@ class RegistrationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -20,14 +18,16 @@ class RegistrationRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, mixed>
+     * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
      */
-    public function rules()
+    public function rules(): array
     {
+        $mob_rules = env('MOBILE_NUMBER_REQUIRED') == true ? 'required|unique:App\Models\User,mobile' : 'unique:App\Models\User,mobile';
+
         return [
             'name'      => 'required|max:255',
             'email'     => 'required|unique:App\Models\User,email',
-            'mobile'    => 'required|unique:App\Models\User,mobile',
+            'mobile'    => $mob_rules,
             'password'  => ['required','confirmed', Password::defaults()],
             'country'   => 'required|max:3',
             'country_code'  => 'max:3',
