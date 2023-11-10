@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::any('/', function () {echo "<div style='text-align:center;user-select:none;padding-top:12%'>Access forbidden</div>";});
-Route::any('/{a}', function () {echo "<div style='text-align:center;user-select:none;padding-top:12%'>Access forbidden</div>";});
-Route::any('/{a}/{b}', function () {echo "<div style='text-align:center;user-select:none;padding-top:12%'>Access forbidden</div>";});
+Route::fallback(function () {
+    echo "<div style='text-align:center;user-select:none;padding-top:12%'>Access forbidden</div>";
+});
 
