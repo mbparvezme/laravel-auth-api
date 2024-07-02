@@ -23,10 +23,10 @@ use App\Http\Controllers\v1\NewPassword;
 Route::prefix('v1')->group(function(){
 
     // Public Routes
-    Route::post('/registration',          [UserController::class, 'store']);
-    Route::post('/login',             [Auth::class, 'login']);
-    Route::post('/password-reset',    [NewPassword::class, 'requestPasswordReset']);
-    Route::put('/reset-password',     [NewPassword::class, 'resetPassword']);
+    Route::post('/registration',        [UserController::class, 'store']);
+    Route::post('/login',               [Auth::class, 'login']);
+    Route::post('/password-reset',      [NewPassword::class, 'requestPasswordReset']);
+    Route::put('/reset-password',       [NewPassword::class, 'resetPassword']);
 
     // Auth Routes, accessible without verification
     Route::group(['middleware' => ['auth:sanctum']], function () {
