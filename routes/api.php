@@ -5,7 +5,7 @@ use App\Http\Controllers\AuthController;
 
 // Public Routes
 Route::post('registration',     [AuthController::class, 'store']);
-Route::post('login',            [AuthController::class, 'login']);
+Route::post('login',             [AuthController::class, 'login']);
 Route::post('password-reset',   [AuthController::class, 'requestPasswordReset']);
 Route::put('reset-password',    [AuthController::class, 'resetPassword']);
 

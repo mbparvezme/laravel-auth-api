@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('app_logs', function (Blueprint $table) {
             $table->id();
             $table->tinyText('user', 10);
-            $table->string('action_key', 32);
+            $table->string('action', 32);
             $table->json('data');
             $table->timestamps();
             $table->dropColumn('updated_at');
