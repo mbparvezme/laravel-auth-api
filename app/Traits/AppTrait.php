@@ -33,7 +33,7 @@ trait AppTrait
     // Response
     public function apiResponse(
         bool $success = false,
-        string $message,
+        $message = null,
         $data = null,
         array $errors = [],
         int $code = 200

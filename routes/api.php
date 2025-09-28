@@ -2,12 +2,15 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PasswordController;
 
 // Public Routes
-Route::post('registration',     [AuthController::class, 'store']);
-Route::post('login',             [AuthController::class, 'login']);
-Route::post('password-reset',   [AuthController::class, 'requestPasswordReset']);
-Route::put('reset-password',    [AuthController::class, 'resetPassword']);
+Route::post('create-user',      [AuthController::class, 'registration']);
+Route::post('login',            [AuthController::class, 'login']);
+
+Route::post('password-reset',           [PasswordController::class, 'requestPasswordReset'])->name('password.reset.request');
+Route::get('password-reset/{token}',    [PasswordController::class, 'showResetForm'])->name('password.reset.form');
+Route::post('reset-password',           [PasswordController::class, 'resetPassword'])->name('password.update');
 
 // Auth Routes, accessible without verification
 Route::group(['middleware' => ['auth:sanctum']], function () {

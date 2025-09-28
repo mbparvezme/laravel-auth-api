@@ -35,8 +35,8 @@ class AuthService{
         $token = $this->user->createToken('authToken')->plainTextToken;
         $this->updateTokenAttributes($request);
 
-        return $this->apiResponse(success: true, message: __('app.INVALID_LOGIN'), data: [
-            'user' => new UserResource($this->user),
+        return $this->apiResponse(success: true, data: [
+            'user' => new UserResource($this-> user),
             'token' => $token,
         ]);
     }
@@ -46,18 +46,19 @@ class AuthService{
         try {
             $validated = $request->validated();
 
-            $user = User::create($validated);
-            $this->addLog(action: 'USER_REGISTRATION', user: $user->id);
-
-            $token = $user->createToken('authToken')->plainTextToken;
+            
+            $this->user = User::create($validated);
+            $this->addLog(action: 'USER_REGISTRATION', user: $this->user->id);
+            
+            $token = $this->user->createToken('authToken')->plainTextToken;
             $this->updateTokenAttributes($request);
-
+            
+            // return response()->json($validated);
             // Send verification email (optional, implement in service/job)
-            // Mail::to($user->email)->send(new VerifyEmail($user));
+            // Mail::to($this->user->email)->send(new VerifyEmail($this->user));
 
-            return $this->apiResponse(success: true, message: __('app.ACCOUNT_CREATED'), 
-                data: [
-                    'user'  => new UserResource($user),
+            return $this->apiResponse(success: true, data: [
+                    'user'  => new UserResource($this->user),
                     'token' => $token,
                 ],
                 code: 201

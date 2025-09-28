@@ -13,21 +13,21 @@ return [
     |
     */
 
-    'INVALID_LOGIN'                 => 'Invalid login details! Please try again with valid credentials.',
-    'THROTTLE'                      => 'Too many login attempts. Please try again in :seconds seconds.',
+    'INVALID_LOGIN'             => 'Invalid login details! Please try again with valid credentials.',
+    'THROTTLE'                  => 'Too many login attempts. Please try again in :seconds seconds.',
 
-    'ACCOUNT_CREATED'               => 'Account created successfully!',
-    'ACCOUNT_CONFIRMED'             => 'Your email has been successfully confirmed!',
+    'ACCOUNT_CREATED'           => 'Account created successfully!',
+    'ACCOUNT_CONFIRMED'         => 'Your email has been successfully confirmed!',
 
     'ALREADY_VERIFIED'              => 'This email address is already verified.',
-    'VERIFICATION_EMAIL_SEND'       => 'An email verification link has been sent to your inbox. Please check your email and follow the instructions to complete the verification process.',
-    'VERIFICATION_DONE'             => 'The email has been verified',
+    'VERIFICATION_EMAIL_SEND'   => 'An email verification link has been sent to your inbox. Please check your email and follow the instructions to complete the verification process.',
+    'VERIFICATION_DONE'         => 'The email has been verified',
 
-    'LOGGED_OUT'                    => 'Logged out successfully!',
-    'PASSWORD_UPDATED'              => 'Password updated successfully! Login to your account to continue.',
+    'LOGGED_OUT'                => 'Logged out successfully!',
+    'PASSWORD_UPDATED'          => 'Password updated successfully! Login to your account to continue.',
 
     // Common messages
-    'ERROR_COMMON'          => 'Something went wrong! Please try again.',
-    'SUCCESS_COMMON'        => 'Operation successful!',
+    'ERROR_COMMON'              => 'Something went wrong! Please try again.',
+    'SUCCESS_COMMON'            => 'Operation successful!',
  
 ];
