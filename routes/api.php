@@ -15,15 +15,15 @@ Route::post('reset-password',           [PasswordController::class, 'resetPasswo
 // Auth Routes, accessible without verification
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('logout',                    [AuthController::class, 'logout']);
+    // >>>>>>>>> logout from all devices
     Route::post('email-verification',       [AuthController::class, 'sendVerificationEmail']);
     Route::get('verify-email/{id}/{hash}',  [AuthController::class, 'verify'])->name("verification.verify");
     Route::get('dashboard',                 [Application::class, 'dashboard']);
-});
-
-// Auth Routes, required email verification
-Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
-    Route::get('profile',           [ProfileController::class, 'profile']);
-    Route::put('update-password',   [ProfileController::class, 'updatePassword']);
+    Route::group(['middleware' => ['verified']], function () {
+        // >>>>>>>>> Active devices
+        Route::get('profile',           [ProfileController::class, 'profile']);
+        Route::put('update-password',   [ProfileController::class, 'updatePassword']);
+    });
 });
 
 // Fallback route

@@ -38,11 +38,7 @@ class PasswordService{
         // Generate reset token
         $token = Password::createToken($user);
 
-        // Normally this goes to email — but for debugging we return the link
-        $resetUrl = url(route('password.reset.form', [
-          'token' => $token,
-          'email' => $user->email,
-        ], false));
+        $resetUrl = env('FRONTEND_URL', 'http://localhost:3000'). '/reset-password/' . $token . '?email=' . urlencode($user->email);
 
         return $this->apiResponse(true, 'Password reset link generated', [
           'reset_url' => $resetUrl

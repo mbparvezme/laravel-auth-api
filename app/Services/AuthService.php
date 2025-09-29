@@ -91,15 +91,25 @@ class AuthService{
         }
     }
 
-    public function logout(Request $request){
-        try{
-            $this->addLog(action:'USER_AUTH_END', user: auth()->user()->id);
-            $request->user()->tokens()->delete();
-            return response()->json($this->result(msg: __('auth.LOGGED_OUT')), 200);
-        } catch (\Throwable $th) {
-            return $this->throwError($th);
-        }
+    public function logout(Request $request)
+    {
+        $this->addLog(action: 'USER_REGISTRATION', user: $this->user->id);
+        $request->user()->currentAccessToken()->delete();
+        return $this->apiResponse(success: true, message: __('auth.LOGGED_OUT'), code: 201);
+    }
+
+    public function logoutAll(Request $request)
+    {
+        $this->addLog(action: 'USER_REGISTRATION', user: $this->user->id);
+        $request->user()->tokens()->delete();
+        return $this->apiResponse(success: true, message: __('auth.LOGGED_OUT'), code: 201);
+    }
+
+
+    public function activeDevices(Request $request)
+    {
+        $tokens = $request->user()->tokens()->get(['id', 'name', 'abilities', 'last_used_at', 'created_at']);
+        return $this->apiResponse(success: true, data: $tokens, code: 201);
     }
 
 }
-
