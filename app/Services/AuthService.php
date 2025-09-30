@@ -4,14 +4,11 @@ namespace App\Services;
 
 use App\Http\Requests\RegistrationRequest;
 use App\Http\Resources\UserResource;
-use App\Mail\VerifyEmail;
 use App\Models\User;
 use App\Traits\AppTrait;
 
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;

@@ -86,7 +86,7 @@ class PasswordService{
       $user = Auth::user();
 
       if (!$user) {
-        return $this->apiResponse(false, 'Unauthenticated', null, [], 401);
+        return $this->apiResponse(false, 'Unauthenticated request!', null, [], 401);
       }
 
       if (!Hash::check($request->current_password, $user->password)) {

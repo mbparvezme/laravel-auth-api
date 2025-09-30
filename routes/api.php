@@ -1,8 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AppController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\ProfileController;
 
 // Public Routes
 Route::post('register', [AuthController::class, 'registration'])->middleware('throttle:2,1');
@@ -12,6 +14,7 @@ Route::post('forgot-password',          [PasswordController::class, 'requestPass
 Route::post('password-reset/{token}',   [PasswordController::class, 'resetPassword'])->name('password.update');
 
 Route::get('verify-email/{id}/{hash}',  [AuthController::class, 'verify'])->middleware('signed')->name("verification.verify");
+Route::get('verify-new-email',          [ProfileController::class, 'verifyNewEmail'])->name('new.email.verify');
 
 // Auth Routes, accessible without verification
 Route::group(['middleware' => ['auth:sanctum']], function () {
@@ -19,12 +22,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('logout',                       [AuthController::class, 'logout']);
     Route::post('logout-all',                   [AuthController::class, 'logoutAll']);
 
-    Route::get('dashboard',                     [Application::class, 'dashboard']);
+    Route::get('dashboard',                     [AppController::class, 'dashboard']);
 
     Route::group(['middleware' => ['verified']], function () {
         Route::get('active-devices',    [AuthController::class, 'activeDevices']);
-        Route::get('profile',           [ProfileController::class, 'profile']);
-        Route::put('update-password',   [ProfileController::class, 'updatePassword']);
+
+        Route::get('profile',           [ProfileController::class, 'index']);
+        Route::patch('email',           [ProfileController::class, 'updateEmail']);
+        Route::post('password',         [ProfileController::class, 'updatePassword']);
     });
 });
 
@@ -39,15 +44,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 // [OK] Logout (All devices)
 // [OK] Forgot password (request)
 // [OK] Reset password
+// [OK] Change password
+// [OK] Profile
+// [OK] Update new email
+// [OK] New email verify
 
-// Change password
-// Update email
 // Update profile picture
 // Update profile information
 // Delete account
-// Profile
-
-
 
 // Fallback route
 Route::fallback(function () {

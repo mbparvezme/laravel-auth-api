@@ -28,7 +28,7 @@ trait AppTrait
         array $errors = [],
         int $code = 200
     ){
-        $m = ($message ? ($success ? __('app.SUCCESS_COMMON') : __('app.ERROR_COMMON')) : $message);
+        $m = $message ?? ($success ? __('app.SUCCESS_COMMON') : __('app.ERROR_COMMON'));
         return response()->json([
             'success' => $success,
             'message' => $m,
