@@ -17,7 +17,12 @@ class AuthController extends Controller
 
     public function registration(RegistrationRequest $request)
     {
-        return $this->authService->register($request);
+        return $this->authService->registration($request);
+    }
+
+    public function verify(Request $request, $id, $hash)
+    {
+        return $this->authService->verify($request, $id, $hash);
     }
 
     public function login(Request $request)
@@ -30,8 +35,17 @@ class AuthController extends Controller
         return $this->authService->logout($request);
     }
 
-    public function loadView($viewName){
-        return view($viewName);
+    public function logoutAll(Request $request)
+    {
+        return $this->authService->logoutAll($request);
     }
 
+    public function resendVerificationEmail(Request $request)
+    {
+        return $this->authService->resendVerificationEmail($request);
+    }
+
+    public function activeDevices(Request $request){
+        return $this->authService->activeDevices($request);
+    }
 }

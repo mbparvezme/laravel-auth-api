@@ -14,7 +14,7 @@ return [
     */
 
     'INVALID_LOGIN'             => 'Invalid login details! Please try again with valid credentials.',
-    'THROTTLE'                  => 'Too many login attempts. Please try again in :seconds seconds.',
+    'THROTTLE'                  => 'You are making too many requests. Please try again in a minute.',
 
     'ACCOUNT_CREATED'           => 'Account created successfully!',
     'ACCOUNT_CONFIRMED'         => 'Your email has been successfully confirmed!',
@@ -23,7 +23,10 @@ return [
     'VERIFICATION_EMAIL_SEND'   => 'An email verification link has been sent to your inbox. Please check your email and follow the instructions to complete the verification process.',
     'VERIFICATION_DONE'         => 'The email has been verified',
 
+    'USER_LOGIN'                => 'Login successful!',
+
     'LOGGED_OUT'                => 'Logged out successfully!',
+    'LOGGED_OUT_ALL'            => 'Logged out successfully from all devices!',
     'PASSWORD_UPDATED'          => 'Password updated successfully! Login to your account to continue.',
 
     // Common messages
