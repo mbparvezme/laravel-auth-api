@@ -77,4 +77,24 @@ class ProfileController extends Controller
         return response()->json(['message' => 'Email verified and updated successfully.']);
     }
 
+    public function accountStatus($status){
+        if(!$status){
+            return $this->apiResponse(success: false, code: 404);
+        }
+
+        $statuses = [
+            "active" => 1,
+            "inactive" => 0,
+            "delete" => -1,
+            "banned" => -2,
+        ];
+
+        $user = auth()->user();
+        $user->status = $statuses[$status] ?? $user->status;
+        $user->save();
+
+        return $this->apiResponse(success: true, code: 404);
+
+    }
+
 }
