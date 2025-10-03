@@ -28,6 +28,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('active-devices',    [AuthController::class, 'activeDevices']);
 
         Route::get('profile',           [ProfileController::class, 'index']);
+        Route::patch('{user}/{status}', [ProfileController::class, 'accountStatus']); // status = active, reactive, inactive, delete, banned
         Route::patch('email',           [ProfileController::class, 'updateEmail']);
         Route::post('password',         [ProfileController::class, 'updatePassword']);
     });
@@ -48,10 +49,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 // [OK] Profile
 // [OK] Update new email
 // [OK] New email verify
+// [OK] Change account status // active, reactive, inactive, delete, banned
 
 // Update profile picture
 // Update profile information
-// Delete account
 
 // Fallback route
 Route::fallback(function () {

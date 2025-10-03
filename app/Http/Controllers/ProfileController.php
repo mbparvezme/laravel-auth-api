@@ -84,6 +84,7 @@ class ProfileController extends Controller
 
         $statuses = [
             "active" => 1,
+            "reactive" => 1,
             "inactive" => 0,
             "delete" => -1,
             "banned" => -2,
@@ -93,7 +94,7 @@ class ProfileController extends Controller
         $user->status = $statuses[$status] ?? $user->status;
         $user->save();
 
-        return $this->apiResponse(success: true, code: 404);
+        return $this->apiResponse(success: true, message: __('app.'. strtoupper($status)), code: 201);
 
     }
 

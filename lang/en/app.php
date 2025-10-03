@@ -29,6 +29,13 @@ return [
     'LOGGED_OUT_ALL'            => 'Logged out successfully from all devices!',
     'PASSWORD_UPDATED'          => 'Password updated successfully! Login to your account to continue.',
 
+    'ACTIVE'                    => 'Account has been activated!',
+    'REACTIVE'                  => 'Account has been reactivated!',
+    'INACTIVE'                  => 'Account inactivated successfully!',
+    'DELETE'                    => 'Account deleted successfully!',
+    'BANNED'                    => 'Account banded!',
+
+
     // Common messages
     'ERROR_COMMON'              => 'Something went wrong! Please try again.',
     'SUCCESS_COMMON'            => 'Operation successful!',
