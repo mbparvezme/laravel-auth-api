@@ -22,7 +22,7 @@ trait AppTrait
     }
 
     public function apiResponse(
-        bool $success = false,
+        bool $success = true,
         $message = null,
         $data = null,
         array $errors = [],

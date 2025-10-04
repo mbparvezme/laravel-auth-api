@@ -17,6 +17,15 @@ class PasswordService{
 
     use AppTrait;
 
+    private static array $logKey = [
+        'reset_link_sent' => 'PASS_RESET_LINK_SENT',
+        'reset_link_err' => 'RESET_LINK_ERR',
+        'pass_reset_ok' => 'PASS_RESET_OK',
+        'pass_reset_err' => 'PASS_RESET_ERR',
+        'pass_update_err' => 'PASS_UPDATE_ERR',
+        'pass_update_ok' => 'PASS_UPDATE_OK',
+    ];
+
     public function requestPasswordReset(Request $request)
     {
         $request->validate(['email' => 'required|email']);
@@ -25,24 +34,20 @@ class PasswordService{
         // $status = Password::sendResetLink($request->only('email'));
 
         // if ($status === Password::RESET_LINK_SENT) {
-        //   $this->addLog(action: 'FORGOT_PASSWORD', data: ['email' => $request->email]);
-        //   return $this->apiResponse(true, __($status));
+        //   $this->addLog(action: self::$logKey['reset_link_sent'], data: ['email' => $request->email]);
+        //   return $this->apiResponse(success: true, message: __('app.RESET_LINK_SENT'));
         // }
 
-        // $this->addLog(action: 'FORGOT_PASSWORD_FAILED', data: ['email' => $request->email]);
-        // return $this->apiResponse(false, __($status), null, [], 400);
+        // $this->addLog(action: self::$logKey['reset_link_err'], data: ['email' => $request->email]);
+        // return $this->apiResponse(success: false, message: __('app.RESET_LINK_ERR'), code: 400);
 
         // ======================================
         // Test code
         $user = User::where('email', $request->email)->first();
         // Generate reset token
         $token = Password::createToken($user);
-
         $resetUrl = env('FRONTEND_URL', 'http://localhost:3000'). '/reset-password/' . $token . '?email=' . urlencode($user->email);
-
-        return $this->apiResponse(true, 'Password reset link generated', [
-          'reset_url' => $resetUrl
-        ]);
+        return $this->apiResponse(true, 'Password reset link generated', ['reset_url' => $resetUrl]);
     }
 
 
@@ -67,12 +72,12 @@ class PasswordService{
         );
 
         if ($status === Password::PASSWORD_RESET) {
-          $this->addLog(action: 'PASSWORD_RESET', data: ['email' => $request->email]);
-          return $this->apiResponse(true, __($status));
+          $this->addLog(action: self::$logKey['pass_reset_ok'], data: ['email' => $request->email]);
+          return $this->apiResponse(message: __('app.RESET_PASS_OK'));
         }
 
-        $this->addLog(action: 'PASSWORD_RESET_FAILED', data: ['email' => $request->email]);
-        return $this->apiResponse(false, __($status), null, [], 400);
+        $this->addLog(action: self::$logKey['pass_reset_err'], data: ['email' => $request->email]);
+        return $this->apiResponse(success: false, message: __('app.RESET_PASS_ERR'),code:  400);
     }
 
 
@@ -86,19 +91,19 @@ class PasswordService{
       $user = Auth::user();
 
       if (!$user) {
-        return $this->apiResponse(false, 'Unauthenticated request!', null, [], 401);
+        return $this->apiResponse(success: false, message: __('app.UNAUTH_PASS_UPDATE'), code: 401);
       }
 
       if (!Hash::check($request->current_password, $user->password)) {
-        $this->addLog(action: 'PASSWORD_UPDATE_FAILED', user: $user->id);
-        return $this->apiResponse(false, __('app.PASSWORD_ERROR'));
+        $this->addLog(action: self::$logKey['pass_update_err'], user: $user->id);
+        return $this->apiResponse(success: false, message: __('app.PASS_UPDATE_CURRENT_PASS_ERR'), code: 401);
       }
 
       $user->password = Hash::make($request->new_password);
       $user->save();
 
-      $this->addLog(action: 'PASSWORD_UPDATED', user: $user->id);
-      return $this->apiResponse(true, __('app.PASSWORD_UPDATED'));
+      $this->addLog(action: self::$logKey['pass_update_ok'], user: $user->id);
+      return $this->apiResponse(true, __('app.PASS_UPDATE'));
     }
 
 
