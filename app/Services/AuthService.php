@@ -25,7 +25,9 @@ class AuthService{
         'login_ok' => 'LOGIN_OK',
         'logout' => 'LOGOUT',
         'logout_all' => 'LOGOUT_ALL',
+        'verification_token_err' => 'VERIFICATION_TOKEN_ERR',
         'verification_resend' => 'VERIFICATION_RESENT',
+        'verification_revisited' => 'VERIFICATION_LINK_REVISITED',
         'verified' => 'VERIFIED',
     ];
 
@@ -80,7 +82,7 @@ class AuthService{
         $this->addLog(action: self::$logKey['login_ok'], user: $this->user->id);
         return $this->apiResponse(success: true, message: __('app.USER_LOGIN'),
             data: [
-                'user' => new UserResource($this-> user),
+                'user' => new UserResource($this->user),
                 'token' => $token,
             ]
         );
@@ -89,8 +91,7 @@ class AuthService{
     protected function updateTokenAttributes($request): void{
         $accessToken = $this->user->tokens()->latest()->first();
         if ($accessToken) {
-            DB::table('personal_access_tokens')->where('id', $accessToken->id)
-                ->update(['attributes' => json_encode($this->userMeta($request))]);
+            $accessToken->update(['attributes' => json_encode($this->userMeta($request))]);
         }
     }
 
@@ -98,55 +99,59 @@ class AuthService{
     {
         $this->addLog(action: self::$logKey['logout'], user: Auth::id());
         $request->user()->currentAccessToken()->delete();
-        return $this->apiResponse(success: true, message: __('auth.LOGGED_OUT'), code: 201);
+        return $this->apiResponse(success: true, message: __('auth.LOGGED_OUT'));
     }
 
     public function logoutAll(Request $request)
     {
         $this->addLog(action: self::$logKey['logout_all'], user: Auth::id());
         $request->user()->tokens()->delete();
-        return $this->apiResponse(success: true, message: __('auth.LOGGED_OUT_ALL'), code: 201);
+        return $this->apiResponse(success: true, message: __('auth.LOGGED_OUT_ALL'));
     }
 
     public function activeDevices(Request $request)
     {
         $tokens = $request->user()->tokens()->get(['id', 'name', 'abilities', 'last_used_at', 'created_at']);
-        return $this->apiResponse(success: true, data: $tokens, code: 201);
+        return $this->apiResponse(success: true, data: $tokens);
     }
 
-    // Send verification email
+    // Resend verification email
     public function resendVerificationEmail(Request $request)
     {
         $user = $request->user();
 
         if ($user->hasVerifiedEmail()) {
+            $this->addLog(action: self::$logKey['verification_revisited'], user: $user->id);
             return $this->apiResponse(success: true, message: __('app.ALREADY_VERIFIED'));
         }
 
-        $request->user()->sendEmailVerificationNotification();
+        $user->sendEmailVerificationNotification();
 
-        $this->addLog(action: self::$logKey['verification_resend'], user: Auth::id());
+        $this->addLog(action: self::$logKey['verification_resend'], user: $user->id);
         return $this->apiResponse(success: true, message: __('app.VERIFICATION_EMAIL_SEND'));
     }
 
     // Verify email
-    public function verify($id, $hash)
+    public function verify(Request $request, User $user)
     {
-        $user = User::findOrFail($id);
-
-        if (!hash_equals((string) $hash, sha1($user->email))) {
-            return response()->json(['success' => false, 'message' => __('app.INVALID_VERIFICATION_LINK')], 400);
+        // If invalid link
+        if (! $request->hasValidSignature()) {
+            $this->addLog(action: self::$logKey['verification_token_err'], user: $user->id);
+            return $this->apiResponse(success: false, message: __('app.INVALID_VERIFICATION_LINK'), code: 403);
         }
 
+        // If already verified
         if ($user->hasVerifiedEmail()) {
-            return response()->json(['success' => true, 'message' => __('app.ALREADY_VERIFIED')]);
+            $this->addLog(action: self::$logKey['verification_revisited'], user: $user->id);
+            return $this->apiResponse(success: true, message: __('app.ALREADY_VERIFIED'));
         }
 
+        // Mark as verified
         $user->markEmailAsVerified();
         event(new Verified($user));
 
-        $this->addLog(action: self::$logKey['verified'], user: Auth::id());
-        return response()->json(['success' => true, 'message' => __('app.EMAIL_VERIFIED')]);
+        $this->addLog(action: self::$logKey['verified'], user: $user->id);
+        return $this->apiResponse(success: true, message: __('app.EMAIL_VERIFIED'));
     }
 
 }

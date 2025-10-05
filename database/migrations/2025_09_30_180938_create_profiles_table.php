@@ -17,7 +17,7 @@ return new class extends Migration
 
             $table->string('profile_picture')->nullable();
             $table->string('mobile')->nullable();
-            $table->string('primary_email')->nullable();
+            $table->string('pending_email')->nullable();
             $table->string('address')->nullable();
             $table->date('dob')->nullable();
             $table->string('gender')->nullable();

@@ -11,6 +11,7 @@ class Profile extends Model
         'user_id',
         'profile_picture',
         'mobile',
+        'pending_email',
         'address',
         'dob',
         'gender',

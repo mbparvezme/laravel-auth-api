@@ -6,7 +6,6 @@ use App\Models\User;
 use App\Traits\AppTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Jenssegers\Agent\Agent;
 // ====
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Auth;
@@ -44,7 +43,6 @@ class PasswordService{
         // ======================================
         // Test code
         $user = User::where('email', $request->email)->first();
-        // Generate reset token
         $token = Password::createToken($user);
         $resetUrl = env('FRONTEND_URL', 'http://localhost:3000'). '/reset-password/' . $token . '?email=' . urlencode($user->email);
         return $this->apiResponse(true, 'Password reset link generated', ['reset_url' => $resetUrl]);
@@ -62,32 +60,26 @@ class PasswordService{
         $status = Password::reset(
           $request->only('email', 'password', 'password_confirmation', 'token'),
           function (User $user, string $password) {
-            $user->forceFill([
-              'password' => Hash::make($password),
-              'remember_token' => Str::random(60),
-            ])->save();
-
+            $user->forceFill(['password' => Hash::make($password), 'remember_token' => Str::random(60)])->save();
             event(new PasswordReset($user));
           }
         );
 
         if ($status === Password::PASSWORD_RESET) {
+          $user = User::where('email', $request->email)->first();
+          $user->tokens()->delete();
           $this->addLog(action: self::$logKey['pass_reset_ok'], data: ['email' => $request->email]);
-          return $this->apiResponse(message: __('app.RESET_PASS_OK'));
+          return $this->apiResponse(success: true, message: __('app.RESET_PASS_OK'));
         }
 
         $this->addLog(action: self::$logKey['pass_reset_err'], data: ['email' => $request->email]);
-        return $this->apiResponse(success: false, message: __('app.RESET_PASS_ERR'),code:  400);
+        return $this->apiResponse(success: false, message: __('app.RESET_PASS_ERR'), code:  400);
     }
 
 
     public function updatePassword(Request $request)
     {
-      $request->validate([
-        'current_password' => 'required|string',
-        'new_password'     => 'required|string|min:8|confirmed',
-      ]);
-
+      $request->validate(['current_password' => 'required|string', 'new_password' => 'required|string|min:8|confirmed']);
       $user = Auth::user();
 
       if (!$user) {
@@ -103,8 +95,7 @@ class PasswordService{
       $user->save();
 
       $this->addLog(action: self::$logKey['pass_update_ok'], user: $user->id);
-      return $this->apiResponse(true, __('app.PASS_UPDATE'));
+      return $this->apiResponse(success: true, message: __('app.PASS_UPDATE'));
     }
-
 
 }

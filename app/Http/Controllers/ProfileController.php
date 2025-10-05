@@ -7,18 +7,35 @@ use App\Models\User;
 use App\Traits\AppTrait;
 use App\Http\Resources\UserResource;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Str;
 
 class ProfileController extends Controller
 {
     use AppTrait;
     protected PasswordService $passwordService;
+
+    private static array $logKey = [
+        'email_update_pass_err' => 'EMAIL_UPDATE_PASS_ERR',
+        'email_update_verification_link_sent' => 'NEW_EMAIL_VERIFICATION_SENT',
+        'email_update_invalid_token' => 'NEW_EMAIL_INVALID_TOKEN',
+        'email_update_invalid_user' => 'EMAIL_UPDATE_INVALID_USER',
+        'email_update_not_pending' => 'EMAIL_UPDATE_NOT_PENDING',
+        'new_email_verified' => 'NEW_EMAIL_VERIFIED',
+    ];
+
+    private static array $statuses = [
+        "active" => 1,
+        "reactive" => 1,
+        "inactive" => 0,
+        "delete" => -1,
+        "banned" => -2,
+    ];
 
     public function index(){
         return $this->apiResponse(success: true, message: __('app.USER_INFO'), data: 
@@ -41,10 +58,11 @@ class ProfileController extends Controller
         ]);
 
         if (!Hash::check($request->password, $user->password)) {
-            return response()->json(['message' => 'Password does not match'], 403);
+            $this->addLog(action: self::$logKey['email_update_pass_err'], data: $request->all(), user: $user->id);
+            return $this->apiResponse(success: false, message: __('app.EMAIL_UPDATE_PASS_ERR'), code: 400);
         }
 
-        $user->profile->primary_email = $request->email;
+        $user->profile->pending_email = $request->email;
         $user->profile->save();
 
         $verificationUrl = URL::temporarySignedRoute(
@@ -55,46 +73,52 @@ class ProfileController extends Controller
             $m->to($request->email)->subject('Verify your new email');
         });
 
-        return response()->json(['message' => 'Verification email sent to the new address.']);
+        $this->addLog(action: self::$logKey['email_update_verification_link_sent'], data: ['old' => $user->email, 'new' => $request->email], user: $user->id);
+        return $this->apiResponse(success: true, message: __('app.EMAIL_UPDATE_VERIFICATION_EMAIL_SENT'));
     }
 
     public function verifyNewEmail(Request $request)
     {
         if (!$request->hasValidSignature()) {
-            return response()->json(['message' => 'Invalid or expired verification link'], 403);
+            $this->addLog(action: self::$logKey['email_update_invalid_token'], data: $request->all());
+            return $this->apiResponse(success: false, message: __('app.EMAIL_UPDATE_INVALID_TOKEN'), code: 403);
         }
 
         $user = User::findOrFail($request->user);
 
-        if (!$user->profile || !$user->profile->primary_email) {
-            return response()->json(['message' => 'No pending email change found'], 404);
+        if (!$user?->profile) {
+            $this->addLog(action: self::$logKey['email_update_invalid_user'], data: $request->all());
+            return $this->apiResponse(success: false, message: __('app.EMAIL_UPDATE_INVALID_USER'), code: 404);
         }
 
-        $user->email = $user->profile->primary_email;
-        $user->email_verified_at = now();
-        $user->save();
+        if (!$user->profile->pending_email) {
+            $this->addLog(action: self::$logKey['email_update_not_pending'], data: $request->all());
+            return $this->apiResponse(success: false, message: __('app.EMAIL_UPDATE_INVALID_PENDING'), code: 404);
+        }
 
-        return response()->json(['message' => 'Email verified and updated successfully.']);
+        DB::transaction(function() use ($user) {
+            $user->email = $user->profile->pending_email;
+            $user->email_verified_at = now();
+            $user->save();
+
+            $user->profile->pending_email = null;
+            $user->profile->save();
+        });
+
+        $this->addLog(action: self::$logKey['new_email_verified'], data: $request->all());
+        return $this->apiResponse(success: true, message: __('app.NEW_EMAIL_VERIFIED'), code: 200);
     }
 
     public function accountStatus($status){
-        if(!$status){
+        if (!array_key_exists($status, self::$statuses)) {
             return $this->apiResponse(success: false, code: 404);
         }
 
-        $statuses = [
-            "active" => 1,
-            "reactive" => 1,
-            "inactive" => 0,
-            "delete" => -1,
-            "banned" => -2,
-        ];
-
         $user = auth()->user();
-        $user->status = $statuses[$status] ?? $user->status;
+        $user->status = self::$statuses[$status] ?? $user->status;
         $user->save();
 
-        return $this->apiResponse(success: true, message: __('app.'. strtoupper($status)), code: 201);
+        return $this->apiResponse(success: true, message: __('app.'. strtoupper($status)), code: 200);
 
     }
 
