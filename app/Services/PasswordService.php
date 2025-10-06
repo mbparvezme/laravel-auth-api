@@ -93,6 +93,7 @@ class PasswordService{
 
       $user->password = Hash::make($request->new_password);
       $user->save();
+      $user->tokens()->delete();
 
       $this->addLog(action: self::$logKey['pass_update_ok'], user: $user->id);
       return $this->apiResponse(success: true, message: __('app.PASS_UPDATE'));

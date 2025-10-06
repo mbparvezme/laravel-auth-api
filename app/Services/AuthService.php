@@ -91,7 +91,8 @@ class AuthService{
     protected function updateTokenAttributes($request): void{
         $accessToken = $this->user->tokens()->latest()->first();
         if ($accessToken) {
-            $accessToken->update(['attributes' => json_encode($this->userMeta($request))]);
+            DB::table('personal_access_tokens')->where('id', $accessToken->id)
+                ->update(['attributes' => json_encode($this->userMeta($request))]);
         }
     }
 
@@ -111,7 +112,7 @@ class AuthService{
 
     public function activeDevices(Request $request)
     {
-        $tokens = $request->user()->tokens()->get(['id', 'name', 'abilities', 'last_used_at', 'created_at']);
+        $tokens = $request->user()->tokens()->get(['id', 'name', 'abilities', 'attributes', 'last_used_at', 'created_at']);
         return $this->apiResponse(success: true, data: $tokens);
     }
 

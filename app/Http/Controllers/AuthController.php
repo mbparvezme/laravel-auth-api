@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RegistrationRequest;
+use App\Models\User;
 use App\Services\AuthService;
 use Illuminate\Http\Request;
 
@@ -22,7 +23,8 @@ class AuthController extends Controller
 
     public function verify(Request $request, $id, $hash)
     {
-        return $this->authService->verify($request, $id, $hash);
+        $user = User::findOrFail($id);
+        return $this->authService->verify($request, $user);
     }
 
     public function login(Request $request)

@@ -7,13 +7,14 @@ use App\Models\User;
 use App\Traits\AppTrait;
 use App\Http\Resources\UserResource;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class ProfileController extends Controller
 {
@@ -43,19 +44,18 @@ class ProfileController extends Controller
         );
     }
 
-    public function updatePassword(Request $request)
-    {
-        return $this->passwordService->updatePassword($request);
-    }
-
     public function updateEmail(Request $request)
     {
         $user = $request->user();
 
-        $request->validate([
-            'email' => ['required', 'email', Rule::unique('users')->ignore($user->id)],
+        $validator = Validator::make($request->all(), [
+            'email'    => ['required', 'email', Rule::unique('users')->ignore($user->id)],
             'password' => ['required'],
         ]);
+
+        if ($validator->fails()) {
+            return $this->apiResponse(success: false, message: $validator->errors(), code: 422);
+        }
 
         if (!Hash::check($request->password, $user->password)) {
             $this->addLog(action: self::$logKey['email_update_pass_err'], data: $request->all(), user: $user->id);
@@ -115,7 +115,7 @@ class ProfileController extends Controller
         }
 
         $user = auth()->user();
-        $user->status = self::$statuses[$status] ?? $user->status;
+        $user->status = (string) self::$statuses[$status] ?? $user->status;
         $user->save();
 
         return $this->apiResponse(success: true, message: __('app.'. strtoupper($status)), code: 200);

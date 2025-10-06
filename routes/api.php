@@ -8,39 +8,34 @@ use App\Http\Controllers\ProfileController;
 
 // Public Routes
 Route::group(['middleware' => ['throttle:5,1']], function () {
-    Route::post('register', [AuthController::class, 'registration']);
-    Route::post('login',    [AuthController::class, 'login']);
-    
+    /** OK */Route::post('register', [AuthController::class, 'registration']);
+    /** OK */Route::get('verify-email/{id}/{hash}',  [AuthController::class, 'verify'])->middleware('signed')->name("verification.verify");
+    /** OK */Route::post('login',    [AuthController::class, 'login']);
+
+    /** OK */Route::get('verify-new-email',          [ProfileController::class, 'verifyNewEmail'])->name('new.email.verify');
+
     Route::post('password/forgot',          [PasswordController::class, 'requestPasswordReset'])->name('password.reset.request');
     Route::post('password/reset/{token}',   [PasswordController::class, 'resetPassword'])->name('password.update');
-    
-    Route::get('verify-email/{id}/{hash}',  [AuthController::class, 'verify'])->middleware('signed')->name("verification.verify");
-    Route::get('verify-new-email',          [ProfileController::class, 'verifyNewEmail'])->name('new.email.verify');
 });
 
 // Auth Routes, accessible without verification
-Route::group(['middleware' => ['auth:sanctum']], function () {    
-    Route::group(['middleware' => ['throttle:3,1']], function () {
-        Route::post('resend-verification-email',    [AuthController::class, 'resendVerificationEmail'])->name('verification.resend');
-        Route::post('logout',                       [AuthController::class, 'logout']);
-        Route::post('logout-all',                   [AuthController::class, 'logoutAll']);
+Route::group(['middleware' => ['auth:sanctum', 'throttle:3,1']], function () {
+    Route::post('resend-verification-email',    [AuthController::class, 'resendVerificationEmail'])->name('verification.resend');
+        /** OK */Route::post('logout',                       [AuthController::class, 'logout']);
+        /** OK */Route::post('logout-all',                   [AuthController::class, 'logoutAll']);
 
-        Route::get('dashboard',                     [AppController::class, 'dashboard']);
-    
-        Route::group(['middleware' => ['verified']], function () {
-            Route::get('active-devices',    [AuthController::class, 'activeDevices']);
+    Route::group(['middleware' => ['verified']], function () {
+            /** OK */Route::get('dashboard',                     [AppController::class, 'dashboard']);
+            /** OK */Route::get('active-devices',    [AuthController::class, 'activeDevices']);
 
-            Route::prefix('account')->group(function () {
-                Route::get('/',             [ProfileController::class, 'index']);
-                Route::patch('{status}',    [ProfileController::class, 'accountStatus']);
-                Route::patch('email',       [ProfileController::class, 'updateEmail']);
-                Route::post('password',     [ProfileController::class, 'updatePassword']);
-            });
+        Route::prefix('account')->group(function () {
+            /** OK */Route::get('/',             [ProfileController::class, 'index']);
+            /** OK */Route::patch('/email',       [ProfileController::class, 'updateEmail']);
+            /** OK */Route::post('password',     [PasswordController::class, 'updatePassword']);
+            Route::patch('{status}',    [ProfileController::class, 'accountStatus']);
         });
     });
 });
-
-
 
 // [OK] Registration
 // [OK] Verification email
