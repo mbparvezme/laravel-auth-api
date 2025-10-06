@@ -14,8 +14,8 @@ Route::group(['middleware' => ['throttle:5,1']], function () {
 
     /** OK */Route::get('verify-new-email',          [ProfileController::class, 'verifyNewEmail'])->name('new.email.verify');
 
-    Route::post('password/forgot',          [PasswordController::class, 'requestPasswordReset'])->name('password.reset.request');
-    Route::post('password/reset/{token}',   [PasswordController::class, 'resetPassword'])->name('password.update');
+    /** OK */Route::post('password/forgot',          [PasswordController::class, 'requestPasswordReset'])->name('password.reset.request');
+    /** OK */Route::post('password/reset/{token}',   [PasswordController::class, 'resetPassword'])->name('password.reset');
 });
 
 // Auth Routes, accessible without verification

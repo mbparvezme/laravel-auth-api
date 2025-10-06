@@ -18,8 +18,8 @@ class PasswordController extends Controller
         return $this->passwordService->requestPasswordReset($request);
     }
 
-    public function resetPassword(Request $request){
-        return $this->passwordService->resetPassword($request);
+    public function resetPassword(Request $request, $token){
+        return $this->passwordService->resetPassword($request, $token);
     }
 
     public function updatePassword(Request $request)
