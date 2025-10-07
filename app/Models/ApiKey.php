@@ -2,31 +2,40 @@
 
 namespace App\Models;
 
-use App\BaseModel;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 class ApiKey extends BaseModel
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
-    protected $fillable = ['user_id', 'key', 'secret', 'abilities', 'expires_at'];
+    protected $fillable = ['user_id', 'key', 'name', 'secret', 'abilities', 'expires_at'];
 
     protected $casts = [
         'abilities' => 'array',
         'expires_at' => 'datetime',
     ];
 
-    // Generate key & secret
-    public static function generateForUser($userId, $abilities = null, $expiresAt = null)
+    public static function generateForUser($userId, $name, $abilities = [], $expiresAt = null)
     {
-        return self::create([
+        $plainSecret = Str::random(64);
+        $apiKey = self::create([
             'user_id' => $userId,
+            'name' => $name,
             'key' => Str::random(32),
-            'secret' => hash('sha256', Str::random(64)),
+            'secret' => hash('sha256', $plainSecret),
             'abilities' => $abilities,
             'expires_at' => $expiresAt,
         ]);
+        $apiKey->plain_secret = $plainSecret;
+        return $apiKey;
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

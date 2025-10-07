@@ -2,13 +2,11 @@
 
 namespace App\Traits;
 use App\Models\AppLog;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use Jenssegers\Agent\Agent; 
 
 trait AppTrait
 {
-
     public function addLog(string $action, array $data = [], int|bool $user = FALSE)
     {
         $request = request();
@@ -84,11 +82,7 @@ trait AppTrait
         }
 
         if ($user->status == -1) {
-            return $this->apiResponse(false, __('app.USER_DELETED'), null, null, 403);
-        }
-
-        if ($user->status == -2) {
-            return $this->apiResponse(false, __('app.USER_BLOCKED'), null, null, 403);
+            return $this->apiResponse(success: false, message: __('app.USER_BLOCKED'), code: 403);
         }
 
         return null;

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AppController;
+use App\Http\Controllers\ApiKeyController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\ProfileController;
@@ -19,15 +20,21 @@ Route::group(['middleware' => ['throttle:5,1']], function () {
 });
 
 // Auth Routes, accessible without verification
-Route::group(['middleware' => ['auth:sanctum', 'throttle:3,1']], function () {
+Route::group(['middleware' => ['auth:sanctum', 'throttle:10,1']], function () {
     Route::post('resend-verification-email',    [AuthController::class, 'resendVerificationEmail'])->name('verification.resend');
     Route::post('logout',                       [AuthController::class, 'logout']);
     Route::post('logout-all',                   [AuthController::class, 'logoutAll']);
 
     Route::group(['middleware' => ['verified']], function () {
-        Route::get('dashboard',         [AppController::class, 'dashboard']);
-        Route::get('active-devices',    [AuthController::class, 'activeDevices']);
-        Route::get('api-token',         [AuthController::class, 'activeDevices']);
+        Route::get('dashboard',     [AppController::class, 'dashboard']);
+        Route::get('active-device', [AuthController::class, 'activeDevices']);
+
+        Route::prefix('api-keys')->group(function () {
+            Route::get('/',         [ApiKeyController::class, 'index']);
+            Route::post('/',        [ApiKeyController::class, 'storeByUser']);
+            Route::patch('{id}',    [ApiKeyController::class, 'regenerate']);
+            Route::delete('{id}',   [ApiKeyController::class, 'destroy']);
+        });
 
         Route::prefix('account')->group(function () {
             Route::get('/',             [ProfileController::class, 'index']);
