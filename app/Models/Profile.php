@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\BaseModel;
 
-class Profile extends Model
+class Profile extends BaseModel
 {
 
     protected $fillable = [

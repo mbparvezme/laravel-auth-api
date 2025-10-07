@@ -36,8 +36,14 @@ class AuthService{
         try {
             $validated = $request->validated();
 
+            // Check if email already exists and banned/deleted
+            $existingUser = User::where('email', $validated['email'])->first();
+            if ($resp = $this->checkUserStatus($existingUser)) {
+                return $resp;
+            }
+
             $this->user = User::create($validated);
-            
+
             $token = $this->user->createToken('authToken')->plainTextToken;
             $this->updateTokenAttributes($request);
             $this->user->sendEmailVerificationNotification();
@@ -69,6 +75,10 @@ class AuthService{
         if (!$this->user) {
             $this->addLog(action: self::$logKey['id_err'], data: ['userid' => $request->userid]);
             return $this->apiResponse(success: false, message: __('app.INVALID_LOGIN'));
+        }
+
+        if ($resp = $this->checkUserStatus($this->user)) {
+            return $resp;
         }
 
         if (!Hash::check($request->password, $this->user->password)) {
@@ -154,5 +164,6 @@ class AuthService{
         $this->addLog(action: self::$logKey['verified'], user: $user->id);
         return $this->apiResponse(success: true, message: __('app.EMAIL_VERIFIED'));
     }
+
 
 }

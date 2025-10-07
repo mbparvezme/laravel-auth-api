@@ -30,7 +30,14 @@ class PasswordService{
     {
         $request->validate(['email' => 'required|email']);
 
-        // Actual code
+        $user = User::where('email', $request->email)->first();
+        if (!$user) {
+            return $this->apiResponse(success: false, message: __('passwords.user'), code: 404);
+        }
+        if ($resp = $this->checkUserStatus($user)) {
+            return $resp;
+        }
+
         $status = Password::sendResetLink($request->only('email'));
 
         if ($status === Password::RESET_LINK_SENT) {
@@ -40,7 +47,6 @@ class PasswordService{
 
         $this->addLog(action: self::$logKey['reset_link_err'], data: ['email' => $request->email]);
         return $this->apiResponse(success: false, message: __('app.RESET_LINK_ERR'), code: 400);
-
         // ======================================
         // Test code
         // $user = User::where('email', $request->email)->first();

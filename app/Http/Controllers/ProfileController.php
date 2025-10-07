@@ -28,6 +28,7 @@ class ProfileController extends Controller
         'email_update_invalid_user' => 'EMAIL_UPDATE_INVALID_USER',
         'email_update_not_pending' => 'EMAIL_UPDATE_NOT_PENDING',
         'new_email_verified' => 'NEW_EMAIL_VERIFIED',
+        'account_status' => 'ACCOUNT_STATUS',
     ];
 
     private static array $statuses = [
@@ -35,7 +36,7 @@ class ProfileController extends Controller
         "reactive" => 1,
         "inactive" => 0,
         "delete" => -1,
-        "banned" => -2,
+        "block" => -2,
     ];
 
     public function index(){
@@ -115,9 +116,15 @@ class ProfileController extends Controller
         }
 
         $user = auth()->user();
+        $data = [
+            'previous' => $key = array_search($user->status, self::$statuses),
+            'new' => $status ?? "UNKNOWN",
+        ];
+
         $user->status = (string) self::$statuses[$status] ?? $user->status;
         $user->save();
 
+        $this->addLog(action: self::$logKey['account_status'], data: $data, user: $user->id);
         return $this->apiResponse(success: true, message: __('app.'. strtoupper($status)), code: 200);
 
     }

@@ -77,4 +77,21 @@ trait AppTrait
         return $deviceName;
     }
 
+    protected function checkUserStatus(?User $user)
+    {
+        if (!$user) {
+            return null;
+        }
+
+        if ($user->status == -1) {
+            return $this->apiResponse(false, __('app.USER_DELETED'), null, null, 403);
+        }
+
+        if ($user->status == -2) {
+            return $this->apiResponse(false, __('app.USER_BLOCKED'), null, null, 403);
+        }
+
+        return null;
+    }
+
 }
