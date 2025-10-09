@@ -19,7 +19,7 @@ class ApiKeyController extends Controller
     {
         $user = $request->user();
         $keys = $user->apiKeys()->get(['id', 'key', 'expires_at', 'created_at']);
-        return response()->json($keys);
+        return $this->apiResponse(success: true, message: __('app.API_KEY_ALL'), data: $keys);
     }
 
     public function storeByUser(Request $request)
@@ -33,7 +33,7 @@ class ApiKeyController extends Controller
         $expires = $request->expires_at ? Carbon::parse($request->expires_at) : Carbon::now()->addDays(90);
         $apiKey = ApiKey::generateForUser($request->user()->id, $request->name, $request->abilities, $expires);
 
-        return response()->json([
+        return $this->apiResponse(success: true, message: __('api.API_KEY_CREATE'), data: [
             'id' => $apiKey->id,
             'name' => $apiKey->name,
             'key' => $apiKey->key,
@@ -41,15 +41,6 @@ class ApiKeyController extends Controller
             'expires_at' => $apiKey->expires_at
         ]);
     }
-
-    public function destroy(Request $request, $id)
-    {
-        $user = $request->user();
-        $apiKey = ApiKey::where('id', $id)->where('user_id', $user->id)->firstOrFail();
-        $apiKey->delete();
-        return response()->json(['message' => 'API key revoked successfully']);
-    }
-
 
     public function regenerate(Request $request, $id)
     {
@@ -60,11 +51,19 @@ class ApiKeyController extends Controller
         $apiKey->secret = hash('sha256', $plainSecret);
         $apiKey->save();
 
-        return response()->json([
+        return $this->apiResponse(success: true, message: __('app.API_KEY_REGENERATE'), data: [
             'key' => $apiKey->key,
             'secret' => $plainSecret,
             'abilities' => $apiKey->abilities,
         ]);
+    }
+
+    public function destroy(Request $request, $id)
+    {
+        $user = $request->user();
+        $apiKey = ApiKey::where('id', $id)->where('user_id', $user->id)->firstOrFail();
+        $apiKey->delete();
+        return $this->apiResponse(success: true, message: __('app.API_KEY_DELETE'));
     }
 
 }

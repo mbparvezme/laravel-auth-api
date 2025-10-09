@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\PasswordService;
-use App\Models\User;
-use App\Traits\AppTrait;
 use App\Http\Resources\UserResource;
+use App\Models\User;
+use App\Services\PasswordService;
+use App\Traits\AppTrait;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -75,7 +75,7 @@ class ProfileController extends Controller
         });
 
         $this->addLog(action: self::$logKey['email_update_verification_link_sent'], data: ['old' => $user->email, 'new' => $request->email], user: $user->id);
-        return $this->apiResponse(success: true, message: __('app.EMAIL_UPDATE_VERIFICATION_EMAIL_SENT'));
+        return $this->apiResponse(success: true, message: __('app.EMAIL_UPDATE_VERIFICATION_SENT'));
     }
 
     public function verifyNewEmail(Request $request)
@@ -94,7 +94,7 @@ class ProfileController extends Controller
 
         if (!$user->profile->pending_email) {
             $this->addLog(action: self::$logKey['email_update_not_pending'], data: $request->all());
-            return $this->apiResponse(success: false, message: __('app.EMAIL_UPDATE_INVALID_PENDING'), code: 404);
+            return $this->apiResponse(success: false, message: __('app.EMAIL_UPDATE_NOT_PENDING'), code: 404);
         }
 
         DB::transaction(function() use ($user) {
@@ -112,7 +112,7 @@ class ProfileController extends Controller
 
     public function accountStatus($status){
         if (!array_key_exists($status, self::$statuses)) {
-            return $this->apiResponse(success: false, code: 404);
+            return $this->apiResponse(success: false, message: __('app.INVALID_REQUEST'), code: 404);
         }
 
         $user = auth()->user();
@@ -126,7 +126,6 @@ class ProfileController extends Controller
 
         $this->addLog(action: self::$logKey['account_status'], data: $data, user: $user->id);
         return $this->apiResponse(success: true, message: __('app.'. strtoupper($status)), code: 200);
-
     }
 
 }
