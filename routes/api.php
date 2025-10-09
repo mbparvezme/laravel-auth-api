@@ -28,7 +28,7 @@ Route::group(['middleware' => ['auth:sanctum', 'throttle:10,1']], function () {
         Route::get('dashboard',     [AppController::class, 'dashboard']);
         Route::get('active-device', [AuthController::class, 'activeDevices']);
 
-        Route::prefix('api-keys')->group(function () {
+        Route::prefix('keys')->group(function () {
             Route::get('/',         [ApiKeyController::class, 'index']);
             Route::post('/',        [ApiKeyController::class, 'storeByUser']);
             Route::patch('{id}',    [ApiKeyController::class, 'regenerate']);

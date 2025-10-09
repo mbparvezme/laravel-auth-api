@@ -14,7 +14,7 @@ return [
     */
 
     // Auth related
-    'ACCOUNT_CREATED'               => 'Account created successfully!',
+    'ACCOUNT_CREATED'               => 'Account created successfully! Please check your email to verify your account.',
     'INVALID_LOGIN'                 => 'Invalid login details! Please try again with valid credentials.',
     'USER_LOGIN'                    => 'Login successful!',
     'LOGGED_OUT'                    => 'Logged out successfully!',
