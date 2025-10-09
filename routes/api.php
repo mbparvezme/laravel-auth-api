@@ -11,6 +11,7 @@ use App\Http\Controllers\ProfileController;
 Route::group(['middleware' => ['throttle:5,1']], function () {
     Route::post('register', [AuthController::class, 'registration']);
     Route::post('login',    [AuthController::class, 'login']);
+
     Route::get('verify-email/{id}/{hash}',  [AuthController::class, 'verify'])->middleware('signed')->name("verification.verify");
     Route::get('verify-new-email',          [ProfileController::class, 'verifyNewEmail'])->name('new.email.verify');
     Route::post('password/forgot',          [PasswordController::class, 'requestPasswordReset'])->name('password.reset.request');
@@ -43,8 +44,11 @@ Route::group(['middleware' => ['auth:sanctum', 'throttle:10,1']], function () {
     });
 });
 
-Route::group(['middleware' => ['throttle:500,1', 'apikey.auth']], function () {    
+Route::group(['middleware' => ['throttle:500,1', 'apikey.auth']], function () {
+    Route::get('/api-data-test', [AppController::class, 'apiTest']);
 });
 
 // Fallback route
-Route::fallback(fn() => response()->json(['message' => 'Not Found.'], 404));
+Route::fallback(function () {
+    return response()->json(['success' => false, 'message' => __('app.ROUTE_FALLBACK')], 404);
+});

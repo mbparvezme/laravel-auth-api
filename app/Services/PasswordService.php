@@ -17,6 +17,7 @@ class PasswordService{
     use AppTrait;
 
     private static array $logKey = [
+        'reset_user_err' => 'PASS_RESET_USER_ERR',
         'reset_link_sent' => 'PASS_RESET_LINK_SENT',
         'reset_link_err' => 'RESET_LINK_ERR',
         'pass_reset_ok' => 'PASS_RESET_OK',
@@ -29,11 +30,13 @@ class PasswordService{
     public function requestPasswordReset(Request $request)
     {
         $request->validate(['email' => 'required|email']);
-
         $user = User::where('email', $request->email)->first();
+
         if (!$user) {
-            return $this->apiResponse(success: false, message: __('passwords.user'), code: 404);
+            $this->addLog(action: self::$logKey['reset_user_err'], data: ['email' => $request->email]);
+            return $this->apiResponse(success: false, message: __('app.PASS_RESET_MSG'), code: 404);
         }
+
         if ($resp = $this->checkUserStatus($user)) {
             return $resp;
         }
@@ -42,11 +45,11 @@ class PasswordService{
 
         if ($status === Password::RESET_LINK_SENT) {
           $this->addLog(action: self::$logKey['reset_link_sent'], data: ['email' => $request->email]);
-          return $this->apiResponse(success: true, message: __('app.RESET_LINK_SENT'));
+          return $this->apiResponse(success: true, message: __('app.PASS_RESET_MSG'));
         }
 
         $this->addLog(action: self::$logKey['reset_link_err'], data: ['email' => $request->email]);
-        return $this->apiResponse(success: false, message: __('app.RESET_LINK_ERR'), code: 400);
+        return $this->apiResponse(success: false, message: __('app.PASS_RESET_MSG'), code: 400);
         // ======================================
         // Test code
         // $user = User::where('email', $request->email)->first();
