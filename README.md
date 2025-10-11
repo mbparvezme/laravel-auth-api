@@ -162,7 +162,7 @@ It includes the following endpoints:
 ### Public Routes
 These endpoints are accessible without authentication and are subject to a strict rate limit.
 
-### 1. User Registration
+#### 1. User Registration
 Creates a new user account and sends an email verification link.
 
 **Method**: `POST`
@@ -199,7 +199,7 @@ Creates a new user account and sends an email verification link.
 
 <br>
 
-### 2. User Login
+#### 2. User Login
 Authenticates a user and returns a Sanctum API token.
 
 **Method**: `POST`
@@ -221,7 +221,7 @@ Authenticates a user and returns a Sanctum API token.
 
 <br>
 
-### 3. Verify Email Address
+#### 3. Verify Email Address
 Verifies the user's email address using the ID and hash from the verification link.
 
 **Method**: `GET`
@@ -243,7 +243,7 @@ Verifies the user's email address using the ID and hash from the verification li
 
 <br>
 
-### 4. Verify New Email Address (After updating email)
+#### 4. Verify New Email Address (After updating email)
 This endpoint verifies user's new email address whenever user updates/change their user email using the ID and hash from the verification link.
 
 **Method**: `GET`
@@ -262,7 +262,7 @@ This endpoint verifies user's new email address whenever user updates/change the
 
 <br>
 
-### 5. Request Password Reset
+#### 5. Request Password Reset
 Sends a password reset link to the user's email address.
 
 **Method**: `POST`
@@ -286,7 +286,7 @@ Sends a password reset link to the user's email address.
 
 <br>
 
-### 6. Reset Password
+#### 6. Reset Password
 Sets a new password using the token from the password reset email.
 
 **Method**: `POST`
@@ -311,6 +311,7 @@ Sets a new password using the token from the password reset email.
 ```
 
 <br>
+<br>
 
 ### Authenticated Routes
 Below are the authenticated routes requires a valid Sanctum API token in the `Authorization` header.
@@ -321,7 +322,7 @@ Authorization: Bearer <SANCTUM_TOKEN>
 
 <br>
 
-### 1. Resend Verification Email
+#### 1. Resend Verification Email
 Sends a new email verification link to the authenticated user.
 
 **Method**: `POST`
@@ -347,7 +348,7 @@ Sends a new email verification link to the authenticated user.
 
 <br>
 
-### 2. Logout
+#### 2. Logout
 Revokes the token that was used to authenticate the current request.
 
 **Method**: `POST`
@@ -364,7 +365,7 @@ Revokes the token that was used to authenticate the current request.
 
 <br>
 
-### 3. Logout From All Devices
+#### 3. Logout From All Devices
 Revokes all tokens associated with the authenticated user.
 
 **Method**: `POST`
@@ -381,7 +382,7 @@ Revokes all tokens associated with the authenticated user.
 
 <br>
 
-### 4. Get Active Devices
+#### 4. Get Active Devices
 Lists all active sessions/tokens for the current user.
 
 **Method**: `POST`
@@ -409,6 +410,111 @@ Lists all active sessions/tokens for the current user.
 		}
 	],
 	"errors": []
+}
+```
+
+<br>
+<br>
+
+### Account Management
+These endpoints require the user to be authenticated and email-verified.
+
+#### 1. Get User Profile
+Retrieves the profile information of the authenticated user.
+
+**Method**: `POST`
+
+**Endpoint**: `/api/account`
+
+**Response (200)**
+```json
+{
+	"success": true,
+	"message": "User profile details!",
+	"data": {
+		"id": 1,
+		"name": "Test User",
+		"email": "test@example.com",
+		"profile": {
+			"profile_picture": "profiles/default.png",
+			"mobile": "+8801712345678",
+			"address": "House 123, Road 4, Dhaka, Bangladesh",
+			"dob": "1990-01-01",
+			"gender": "male",
+			"bio": "This is a sample bio for user 1.",
+      "other_profile_info": "data.."
+		}
+	},
+	"errors": []
+}
+```
+
+<br>
+
+#### 2. Update Email Address
+Updates the user's email address. A new verification link will be sent to the new email.
+
+**Method**: `PATCH`
+
+**Endpoint**: `/api/account/email`
+
+**Request Body**
+```json
+{
+  "email": "new.email@example.com"
+}
+```
+
+**Response (200)**
+```json
+{
+  "success": true,
+  "message": "Email updated. Please check your new inbox to verify the address."
+}
+```
+
+<br>
+
+#### 3. Update Password
+Updates the user's password.
+
+**Method**: `POST`
+
+**Endpoint**: `/api/account/password`
+
+**Request Body**
+```json
+{
+  "current_password": "password123",
+  "password": "newStrongPassword456",
+  "password_confirmation": "newStrongPassword456"
+}
+```
+
+**Response (200)**
+```json
+{
+  "success": true,
+  "message": "Your password has been updated successfully."
+}
+```
+
+<br>
+
+#### 4. Deactivate/Reactivate Account
+Changes the user's account status.
+
+**Method**: `PATCH`
+
+**Endpoint**: `/api/account/{status}`
+
+**URL Parameters**: 
+
+**Response (200)**
+```json
+{
+  "success": true,
+  "message": "Successfully logged out from all devices."
 }
 ```
 

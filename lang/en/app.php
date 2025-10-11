@@ -31,12 +31,12 @@ return [
     'RESET_PASS_OK'                 => 'Password updated successfully! You can now log in with your new password.',
     'UNAUTH_PASS_UPDATE'            => 'Password update error!',
     'PASS_UPDATE_CURRENT_PASS_ERR'  => 'Current password doesn\'t matched!',
-    'PASS_UPDATE'                   => 'Password updated successfully! Login to your account to continue.',
+    'PASS_UPDATE'                   => 'Your password has been updated successfully.',
 
     // Profile related
     'USER_INFO'                     => 'User profile details!',
     'EMAIL_UPDATE_PASS_ERR'         => 'Password does not match!',
-    'EMAIL_UPDATE_VERIFICATION_SENT'=> 'A fresh verification link has been sent to your email address.',
+    'EMAIL_UPDATE_VERIFICATION_SENT'=> 'Email updated. Please check your new inbox to verify the address.',
     'EMAIL_UPDATE_INVALID_TOKEN'    => 'Invalid or expired verification link!',
     'EMAIL_UPDATE_INVALID_USER'     => 'Invalid user for new email verification!',
     'EMAIL_UPDATE_NOT_PENDING'      => 'No pending email change found!',
