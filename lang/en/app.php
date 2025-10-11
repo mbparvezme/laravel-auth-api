@@ -50,7 +50,7 @@ return [
 
     // API Key related
     'API_KEY_ALL'                   => 'All API keys of the user!',
-    'API_KEY_CREATE'                => 'API key created successfully!',
+    'API_KEY_CREATE'                => 'API key created successfully. Store this token securely as it will not be shown again.',
     'API_KEY_REGENERATE'            => 'API key regenerated successfully!',
     'API_KEY_DELETE'                => 'API key revoked successfully!',
     'API_INVALID_CREDENTIAL'        => 'Invalid or expired API credentials.',

@@ -33,7 +33,7 @@ class ApiKeyController extends Controller
         $expires = $request->expires_at ? Carbon::parse($request->expires_at) : Carbon::now()->addDays(90);
         $apiKey = ApiKey::generateForUser($request->user()->id, $request->name, $request->abilities, $expires);
 
-        return $this->apiResponse(success: true, message: __('api.API_KEY_CREATE'), data: [
+        return $this->apiResponse(success: true, message: __('app.API_KEY_CREATE'), data: [
             'id' => $apiKey->id,
             'name' => $apiKey->name,
             'key' => $apiKey->key,

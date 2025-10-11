@@ -519,6 +519,120 @@ Changes the user's account status.
 ```
 
 <br>
+```
+
+<br>
+<br>
+
+### API Key Management
+Endpoints for managing user-generated API keys.
+
+#### 1. List API Keys
+Retrieves all API keys belonging to the user.
+
+**Method**: `GET`
+
+**Endpoint**: `/api/keys`
+
+**Response (200)**
+```json
+{
+	"success": true,
+	"message": "All API keys of the user!",
+	"data": [
+		{
+			"id": 1,
+			"key": "q2BxPBbOQxrqsIhuOt0koL3O3hHLTGMu",
+			"expires_at": "2026-01-09T21:20:57.000000Z",
+			"created_at": "2025-10-11T21:20:57.000000Z"
+		},
+		{
+			"id": 2,
+			"key": "EDym2mBctORQo0QgGtHkSDnbEUiYsaVC",
+			"expires_at": "2026-01-09T21:21:08.000000Z",
+			"created_at": "2025-10-11T21:21:08.000000Z"
+		}
+	],
+	"errors": []
+}
+```
+
+<br>
+
+#### 2. Create API Key
+Creates a new API key.
+> Important: The `plain_text_token` is only returned once upon creation. Store it securely.
+
+**Method**: `POST`
+
+**Endpoint**: `/api/keys`
+
+**Request**
+```json
+{
+  "name": "Website API"
+}
+```
+
+**Response (200)**
+```json
+{
+	"success": true,
+	"message": "API key created successfully. Store this token securely as it will not be shown again.",
+	"data": {
+		"id": 1,
+		"name": "Website API",
+		"key": "9QYu1EUfFDhRHUG2B8Ac3FtvxqXHAsDr",
+		"secret": "hPNjZskLfkqGt1uvute2mV9Td1ymjRhsmwYze3zvZGY3xm5t8f50q7X3nsEKSWQc",
+		"expires_at": "2026-01-09T21:24:48.000000Z"
+	},
+	"errors": []
+}
+```
+
+<br>
+
+#### 3. Regenerate API Key
+Generates a new token for an existing API key.
+
+**Method**: `PATCH`
+
+**Endpoint**: `/api/keys/{id}`
+
+**Response (200)**
+```json
+{
+	"success": true,
+	"message": "API key regenerated successfully!",
+	"data": {
+		"key": "9QYu1EUfFDhRHUG2B8Ac3FtvxqXHAsDr",
+		"secret": "LskXhXjcpBT3aIPu8y6GbmlKsuJiONNoW03SlU6ByIbP489VOFzbIogGe3WUm7gq",
+		"abilities": null
+	},
+	"errors": []
+}
+```
+
+<br>
+
+#### 4. Delete API Key
+Deletes an API key.
+
+**Method**: `DELETE`
+
+**Endpoint**: `/api/keys/{id}`
+
+**Response (200)**
+```json
+{
+	"success": true,
+	"message": "API key revoked successfully!",
+	"data": null,
+	"errors": []
+}
+```
+
+<br>
 
 ## Copyright and license
 
