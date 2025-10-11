@@ -30,27 +30,115 @@ This package encompasses a range of features, including but not limited to:
 ## API Endpoints
 It includes the following endpoints:
 
-| Details                         | Method | API End Points                       |
-| ------------------------------- | ------ | ------------------------------------ |
-| Registration (public)           | POST   | [/api/register](#)                   |
-| Login (public)                  | POST   | [/api/login](#)                      |
-| Email verification  (public)    | GET    | [/api/verify-email/{id}/{hash}](#)   |
-| Verify new email  (public)      | GET    | [/api/verify-new-email](#)           |
-| Request password reset (public) | POST   | [/api/password/forgot](#)            |
-| Reset password (public)         | POST   | [/api/password/reset/{token}](#)     |
-| Resend email verification link  | POST   | [/api/resend-verification-email](#)  |
-| Logout                          | POST   | [/api/logout](#)                     |
-| Logout from all device          | POST   | [/api/logout-all](#)                 |
-| Dashboard                       | GET    | [/api/dashboard](#)                  |
-| Active devices                  | GET    | [/api/active-device](#)              |
-| all API keys                    | GET    | [/api/keys](#)                       |
-| Generate API key                | POST   | [/api/keys](#)                       |
-| Regenerate API key              | PATCH  | [/api/keys/{id}](#)                  |
-| Delete API key                  | DELETE | [/api/keys/{id}](#)                  |
-| Get profile                     | GET    | [/api/account](#)                    |
-| Update email                    | PATCH  | [/api/account/email](#)              |
-| Update password                 | POST   | [/api/account/password](#)           |
-| Update account status           | PATCH  | [/api/account/{status}](#)           |
+<table>
+  <tr>
+    <th>Details</th>
+    <th>Method</th>
+    <th>API End Points</th>
+  </tr>
+  <tr>
+    <td style="font-weight:bold;color:#2299ee" colspan=3>↪ Public routes</td>
+  </tr>
+  <tr>
+    <td>Registration</td>
+    <td>POST</td>
+    <td>/api/register</td>
+  </tr>
+  <tr>
+    <td>Login</td>
+    <td>POST</td>
+    <td>/api/login</td>
+  </tr>
+  <tr>
+    <td>Email verification </td>
+    <td>GET</td>
+    <td>/api/verify-email/{id}/{hash}</td>
+  </tr>
+  <tr>
+    <td>Verify new email </td>
+    <td>GET</td>
+    <td>/api/verify-new-email</td>
+  </tr>
+  <tr>
+    <td>Request password reset</td>
+    <td>POST</td>
+    <td>/api/password/forgot</td>
+  </tr>
+  <tr>
+    <td>Reset password</td>
+    <td>POST</td>
+    <td>/api/password/reset/{token}</td>
+  </tr>
+  <tr>
+    <td style="font-weight:bold;color:#2299ee" colspan=3>↪ Authenticated routes</td>
+  </tr>
+  <tr>
+    <td>Resend email verification link</td>
+    <td>POST</td>
+    <td>/api/resend-verification-email</td>
+  </tr>
+  <tr>
+    <td>Logout</td>
+    <td>POST</td>
+    <td>/api/logout</td>
+  </tr>
+  <tr>
+    <td>Logout from all device</td>
+    <td>POST</td>
+    <td>/api/logout-all</td>
+  </tr>
+  <tr>
+    <td>Dashboard</td>
+    <td>GET</td>
+    <td>/api/dashboard</td>
+  </tr>
+  <tr>
+    <td>Active devices</td>
+    <td>GET</td>
+    <td>/api/active-device</td>
+  </tr>
+  <tr>
+    <td>all API keys</td>
+    <td>GET</td>
+    <td>/api/keys</td>
+  </tr>
+  <tr>
+    <td>Generate API key</td>
+    <td>POST</td>
+    <td>/api/keys</td>
+  </tr>
+  <tr>
+    <td>Regenerate API key</td>
+    <td>PATCH</td>
+    <td>/api/keys/{id}</td>
+  </tr>
+  <tr>
+    <td>Delete API key</td>
+    <td>DELETE</td>
+    <td>/api/keys/{id}</td>
+  </tr>
+  <tr>
+    <td>Get profile</td>
+    <td>GET</td>
+    <td>/api/account</td>
+  </tr>
+  <tr>
+    <td>Update email</td>
+    <td>PATCH</td>
+    <td>/api/account/email</td>
+  </tr>
+  <tr>
+    <td>Update password</td>
+    <td>POST</td>
+    <td>/api/account/password</td>
+  </tr>
+  <tr>
+    <td>Update account status</td>
+    <td>PATCH</td>
+    <td>/api/account/{status}</td>
+  </tr>
+</table>
+
 
 <br>
 
@@ -74,7 +162,6 @@ It includes the following endpoints:
 ### Public Routes
 These endpoints are accessible without authentication and are subject to a strict rate limit.
 
-
 ### 1. User Registration
 Creates a new user account and sends an email verification link.
 
@@ -92,7 +179,7 @@ Creates a new user account and sends an email verification link.
 }
 ```
 
-**Response**
+**Response (CODE)**
 ```js
 {
   "success": true,
@@ -107,6 +194,221 @@ Creates a new user account and sends an email verification link.
 		"token": "1|lAdHJXEP5iwfh0v29bnEtVwbWzfolFGdU6dnP3rB52fe74a1"
 	},
   "errors": []
+}
+```
+
+<br>
+
+### 2. User Login
+Authenticates a user and returns a Sanctum API token.
+
+**Method**: `POST`
+
+**Endpoint**: `/api/login`
+
+**Request Body**
+```json
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+```
+
+**Response (CODE)**
+```js
+
+```
+
+<br>
+
+### 3. Verify Email Address
+Verifies the user's email address using the ID and hash from the verification link.
+
+**Method**: `GET`
+
+**Endpoint**: `/api/verify-email/{id}/{hash}`
+
+**Request Body**
+```json
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+```
+
+**Response (CODE)**
+```js
+
+```
+
+<br>
+
+### 4. Verify New Email Address (After updating email)
+This endpoint verifies user's new email address whenever user updates/change their user email using the ID and hash from the verification link.
+
+**Method**: `GET`
+
+**Endpoint**: `/api/verify-new-email`
+
+**Request Body**
+```json
+
+```
+
+**Response (CODE)**
+```js
+
+```
+
+<br>
+
+### 5. Request Password Reset
+Sends a password reset link to the user's email address.
+
+**Method**: `POST`
+
+**Endpoint**: `/api/password/forgot`
+
+**Request Body**
+```json
+{
+  "email": "user@example.com"
+}
+```
+
+**Response (200)**
+```json
+{
+  "success": true,
+  "message": "A password reset link has been sent to your email address."
+}
+```
+
+<br>
+
+### 6. Reset Password
+Sets a new password using the token from the password reset email.
+
+**Method**: `POST`
+
+**Endpoint**: `/api/password/reset/{token}`
+
+**Request Body**
+```json
+{
+  "email": "user@example.com",
+  "password": "newPassword123",
+  "password_confirmation": "newPassword123"
+}
+```
+
+**Response (200)**
+```json
+{
+  "success": true,
+  "message": "Password updated successfully! You can now log in with your new password."
+}
+```
+
+<br>
+
+### Authenticated Routes
+Below are the authenticated routes requires a valid Sanctum API token in the `Authorization` header.
+
+```
+Authorization: Bearer <SANCTUM_TOKEN>
+```
+
+<br>
+
+### 1. Resend Verification Email
+Sends a new email verification link to the authenticated user.
+
+**Method**: `POST`
+
+**Endpoint**: `/api/resend-verification-email`
+
+**Request Body**
+```json
+{
+  "email": "user@example.com",
+  "password": "newPassword123",
+  "password_confirmation": "newPassword123"
+}
+```
+
+**Response (200)**
+```json
+{
+  "success": true,
+  "message": "A fresh verification link has been sent to your email address."
+}
+```
+
+<br>
+
+### 2. Logout
+Revokes the token that was used to authenticate the current request.
+
+**Method**: `POST`
+
+**Endpoint**: `/api/login`
+
+**Response (200)**
+```json
+{
+  "success": true,
+  "message": "Successfully logged out."
+}
+```
+
+<br>
+
+### 3. Logout From All Devices
+Revokes all tokens associated with the authenticated user.
+
+**Method**: `POST`
+
+**Endpoint**: `/api/logout-all`
+
+**Response (200)**
+```json
+{
+  "success": true,
+  "message": "Successfully logged out from all devices."
+}
+```
+
+<br>
+
+### 4. Get Active Devices
+Lists all active sessions/tokens for the current user.
+
+**Method**: `POST`
+
+**Endpoint**: `/api/active-device`
+
+**Response (200)**
+```json
+{
+	"success": true,
+	"message": "Active devices!",
+	"data": [
+		{
+			"id": 1,
+			"name": "Web API",
+			"attributes": {
+				"mac": "XX-XX-XX-XX-XX-XX   Media disconnected",
+				"browser": false,
+				"platform": false,
+				"ip_address": "127.0.0.1",
+				"device_name": "Desktop"
+			},
+			"last_used_at": "2025-10-08T06:00:22.000000Z",
+			"created_at": "2025-10-08T05:34:44.000000Z"
+		}
+	],
+	"errors": []
 }
 ```
 

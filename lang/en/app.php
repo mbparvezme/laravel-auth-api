@@ -23,12 +23,12 @@ return [
     'ALREADY_VERIFIED'              => 'This email address is already verified.',
     'VERIFICATION_EMAIL_SEND'       => 'An email verification link has been sent to your inbox. Please check your email and follow the instructions to complete the verification process.',
     'INVALID_VERIFICATION_LINK'     => 'Invalid verification link.',
-    'EMAIL_VERIFIED'                => 'Email verified successfully.',
+    'EMAIL_VERIFIED'                => 'Your email has been successfully verified!',
 
     // Password related
-    'PASS_RESET_MSG'                => 'An email will be sent if there is an account with the email you provided!',
+    'PASS_RESET_MSG'                => 'A password reset link has been sent to your email address.',
     'RESET_PASS_ERR'                => 'Password reset error!',
-    'RESET_PASS_OK'                 => 'Password reset successfully!',
+    'RESET_PASS_OK'                 => 'Password updated successfully! You can now log in with your new password.',
     'UNAUTH_PASS_UPDATE'            => 'Password update error!',
     'PASS_UPDATE_CURRENT_PASS_ERR'  => 'Current password doesn\'t matched!',
     'PASS_UPDATE'                   => 'Password updated successfully! Login to your account to continue.',
@@ -36,7 +36,7 @@ return [
     // Profile related
     'USER_INFO'                     => 'User profile details!',
     'EMAIL_UPDATE_PASS_ERR'         => 'Password does not match!',
-    'EMAIL_UPDATE_VERIFICATION_SENT'=> 'An email sent to your new email to verify. Please verify it.',
+    'EMAIL_UPDATE_VERIFICATION_SENT'=> 'A fresh verification link has been sent to your email address.',
     'EMAIL_UPDATE_INVALID_TOKEN'    => 'Invalid or expired verification link!',
     'EMAIL_UPDATE_INVALID_USER'     => 'Invalid user for new email verification!',
     'EMAIL_UPDATE_NOT_PENDING'      => 'No pending email change found!',

@@ -122,8 +122,14 @@ class AuthService{
 
     public function activeDevices(Request $request)
     {
-        $tokens = $request->user()->tokens()->get(['id', 'name', 'abilities', 'attributes', 'last_used_at', 'created_at']);
-        return $this->apiResponse(success: true, messages: __('app.ALL_LOGGED_DEVICES'), data: $tokens);
+        $tokens = $request->user()->tokens()->get(['id', 'name', 'attributes', 'last_used_at', 'created_at']);
+
+        $tokens->transform(function ($token) {
+            $token->attributes = json_decode($token->attributes, true);
+            return $token;
+        });
+
+        return $this->apiResponse(success: true, message: __('app.ALL_LOGGED_DEVICES'), data: $tokens);
     }
 
     // Resend verification email
