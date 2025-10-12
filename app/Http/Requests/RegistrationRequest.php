@@ -18,19 +18,14 @@ class RegistrationRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
-        $mob_rules = env('MOBILE_NUMBER_REQUIRED') == true ? 'required|unique:App\Models\User,mobile' : 'unique:App\Models\User,mobile';
-
         return [
             'name'      => 'required|max:255',
             'email'     => 'required|unique:App\Models\User,email',
-            'mobile'    => $mob_rules,
-            'password'  => ['required','confirmed', Password::defaults()],
-            'country'   => 'required|max:3',
-            'country_code'  => 'max:3',
+            'password'  => ['required','confirmed', Password::defaults()]
         ];
     }
 }
