@@ -35,8 +35,7 @@ class ProfileController extends Controller
         "active" => 1,
         "reactive" => 1,
         "inactive" => 0,
-        "delete" => -1,
-        "block" => -2,
+        "suspend" => -1,
     ];
 
     public function index(){
@@ -117,7 +116,7 @@ class ProfileController extends Controller
 
         $user = auth()->user();
         $data = [
-            'previous' => $key = array_search($user->status, self::$statuses),
+            'previous' => array_search($user->status, self::$statuses),
             'new' => $status ?? "UNKNOWN",
         ];
 

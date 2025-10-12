@@ -30,14 +30,13 @@ This package encompasses a range of features, including but not limited to:
 ## API Endpoints
 It includes the following endpoints:
 
+<h3 style="font-weight:bold;color:#2299ee" colspan=3>↪ Public routes</h3>
+
 <table>
   <tr>
     <th>Details</th>
     <th>Method</th>
     <th>API End Points</th>
-  </tr>
-  <tr>
-    <td style="font-weight:bold;color:#2299ee" colspan=3>↪ Public routes</td>
   </tr>
   <tr>
     <td>Registration</td>
@@ -69,8 +68,17 @@ It includes the following endpoints:
     <td>POST</td>
     <td>/api/password/reset/{token}</td>
   </tr>
+</table>
+
+<br>
+
+<h3 style="font-weight:bold;color:#2299ee" colspan=3>↪ Authenticated routes</h3>
+
+<table>
   <tr>
-    <td style="font-weight:bold;color:#2299ee" colspan=3>↪ Authenticated routes</td>
+    <th>Details</th>
+    <th>Method</th>
+    <th>API End Points</th>
   </tr>
   <tr>
     <td>Resend email verification link</td>
@@ -98,12 +106,15 @@ It includes the following endpoints:
     <td>/api/active-device</td>
   </tr>
   <tr>
-    <td>all API keys</td>
+    <td style="font-weight:bold;color:#22bb99" colspan=3>↪ API Key Management</td>
+  </tr>
+  <tr>
+    <td>List API keys</td>
     <td>GET</td>
     <td>/api/keys</td>
   </tr>
   <tr>
-    <td>Generate API key</td>
+    <td>Create API key</td>
     <td>POST</td>
     <td>/api/keys</td>
   </tr>
@@ -116,6 +127,9 @@ It includes the following endpoints:
     <td>Delete API key</td>
     <td>DELETE</td>
     <td>/api/keys/{id}</td>
+  </tr>
+  <tr>
+    <td style="font-weight:bold;color:#22bb99" colspan=3>↪ Account Management</td>
   </tr>
   <tr>
     <td>Get profile</td>
@@ -159,7 +173,7 @@ It includes the following endpoints:
     ```
 <br>
 
-### Public Routes
+### ↪ Public Routes
 These endpoints are accessible without authentication and are subject to a strict rate limit.
 
 #### 1. User Registration
@@ -179,7 +193,7 @@ Creates a new user account and sends an email verification link.
 }
 ```
 
-**Response (CODE)**
+**Response (201 Created)**
 ```js
 {
   "success": true,
@@ -188,10 +202,10 @@ Creates a new user account and sends an email verification link.
 		"user": {
 			"id": 2,
 			"name": "John Doe",
-			"email": "email3@domain.com",
+			"email": "user@example.com",
 			"profile": null
 		},
-		"token": "1|lAdHJXEP5iwfh0v29bnEtVwbWzfolFGdU6dnP3rB52fe74a1"
+		"token": "1|lAdHhXEP5iQfh0v29DnEqVwbWzfolFGdU6dnP3rB52fe74a7"
 	},
   "errors": []
 }
@@ -214,9 +228,29 @@ Authenticates a user and returns a Sanctum API token.
 }
 ```
 
-**Response (CODE)**
+**Response (200 OK)**
 ```js
-
+{
+	"success": true,
+	"message": "Login successful!",
+	"data": {
+		"user": {
+			"id": 2,
+			"name": "John Doe",
+			"email": "user@example.com",
+			"profile": {
+				"profile_picture": "profiles/default.png",
+				"mobile": "+8801712345678",
+				"address": "House 123, Road 4, Dhaka, Bangladesh",
+				"dob": "1990-01-01",
+				"gender": "male",
+				"bio": "This is a sample bio for user 1."
+			}
+		},
+		"token": "1|lAdHhXEP5iQfh0v29DnEqVwbWzfolFGdU6dnP3rB52fe74a7"
+	},
+	"errors": []
+}
 ```
 
 <br>
@@ -228,17 +262,16 @@ Verifies the user's email address using the ID and hash from the verification li
 
 **Endpoint**: `/api/verify-email/{id}/{hash}`
 
-**Request Body**
-```json
-{
-  "email": "user@example.com",
-  "password": "password123"
-}
-```
+> URL structure: `/api/verify-email/2/<HASH>?expires=<TIMESTAMP>&signature=<ENCRYPTED>`
 
-**Response (CODE)**
+**Response (200 OK)**
 ```js
-
+{
+  "success": true,
+  "message": "Your email has been successfully verified!",
+  "data": null,
+  "errors": []
+}
 ```
 
 <br>
@@ -250,14 +283,16 @@ This endpoint verifies user's new email address whenever user updates/change the
 
 **Endpoint**: `/api/verify-new-email`
 
-**Request Body**
-```json
+> URL structure: `/api/verify-new-email?expires=<TIMESTAMP>&user=<USER ID>&signature=<ENCRYPTED>`
 
-```
-
-**Response (CODE)**
+**Response (200 OK)**
 ```js
-
+{
+"success": true,
+"message": "Email verified and updated successfully.",
+"data": null,
+"errors": []
+}
 ```
 
 <br>
@@ -276,11 +311,13 @@ Sends a password reset link to the user's email address.
 }
 ```
 
-**Response (200)**
+**Response (200 OK)**
 ```json
 {
-  "success": true,
-  "message": "A password reset link has been sent to your email address."
+	"success": true,
+	"message": "A password reset link has been sent to your email address.",
+	"data": null,
+	"errors": []
 }
 ```
 
@@ -296,24 +333,28 @@ Sets a new password using the token from the password reset email.
 **Request Body**
 ```json
 {
-  "email": "user@example.com",
-  "password": "newPassword123",
-  "password_confirmation": "newPassword123"
+	"email" : "test@example.com",
+  "password": "password2",
+  "password_confirmation": "password2",
+	"token": "<TOKEN FROM THE URL>"
 }
 ```
 
-**Response (200)**
+**Response (200 OK)**
 ```json
 {
-  "success": true,
-  "message": "Password updated successfully! You can now log in with your new password."
+    "success": true,
+    "message": "Password updated successfully! You can now log in with your new password.",
+    "data": null,
+    "errors": []
+
 }
 ```
 
 <br>
 <br>
 
-### Authenticated Routes
+### ↪ Authenticated Routes
 Below are the authenticated routes requires a valid Sanctum API token in the `Authorization` header.
 
 ```
@@ -329,20 +370,13 @@ Sends a new email verification link to the authenticated user.
 
 **Endpoint**: `/api/resend-verification-email`
 
-**Request Body**
+**Response (200 OK)**
 ```json
 {
-  "email": "user@example.com",
-  "password": "newPassword123",
-  "password_confirmation": "newPassword123"
-}
-```
-
-**Response (200)**
-```json
-{
-  "success": true,
-  "message": "A fresh verification link has been sent to your email address."
+	"success": true,
+	"message": "An email verification link has been sent to your inbox. Please check your email and follow the instructions to complete the verification process.",
+	"data": null,
+	"errors": []
 }
 ```
 
@@ -353,13 +387,15 @@ Revokes the token that was used to authenticate the current request.
 
 **Method**: `POST`
 
-**Endpoint**: `/api/login`
+**Endpoint**: `/api/logout`
 
-**Response (200)**
+**Response (200 OK)**
 ```json
 {
-  "success": true,
-  "message": "Successfully logged out."
+	"success": true,
+	"message": "Logged out successfully!",
+	"data": null,
+	"errors": []
 }
 ```
 
@@ -372,11 +408,13 @@ Revokes all tokens associated with the authenticated user.
 
 **Endpoint**: `/api/logout-all`
 
-**Response (200)**
+**Response (200 OK)**
 ```json
 {
-  "success": true,
-  "message": "Successfully logged out from all devices."
+	"success": true,
+	"message": "Logged out successfully from all devices!",
+	"data": null,
+	"errors": []
 }
 ```
 
@@ -385,11 +423,11 @@ Revokes all tokens associated with the authenticated user.
 #### 4. Get Active Devices
 Lists all active sessions/tokens for the current user.
 
-**Method**: `POST`
+**Method**: `GET`
 
 **Endpoint**: `/api/active-device`
 
-**Response (200)**
+**Response (200 OK)**
 ```json
 {
 	"success": true,
@@ -416,17 +454,17 @@ Lists all active sessions/tokens for the current user.
 <br>
 <br>
 
-### Account Management
+### ↪ Account Management
 These endpoints require the user to be authenticated and email-verified.
 
 #### 1. Get User Profile
 Retrieves the profile information of the authenticated user.
 
-**Method**: `POST`
+**Method**: `GET`
 
 **Endpoint**: `/api/account`
 
-**Response (200)**
+**Response (200 OK)**
 ```json
 {
 	"success": true,
@@ -461,15 +499,18 @@ Updates the user's email address. A new verification link will be sent to the ne
 **Request Body**
 ```json
 {
-  "email": "new.email@example.com"
+  "email": "new.email@example.com",
+  "password": "password123"
 }
 ```
 
-**Response (200)**
+**Response (200 OK)**
 ```json
 {
-  "success": true,
-  "message": "Email updated. Please check your new inbox to verify the address."
+	"success": true,
+	"message": "Email updated. Please check your new inbox to verify the address.",
+	"data": null,
+	"errors": []
 }
 ```
 
@@ -485,81 +526,49 @@ Updates the user's password.
 **Request Body**
 ```json
 {
-  "current_password": "password123",
-  "password": "newStrongPassword456",
-  "password_confirmation": "newStrongPassword456"
+    "current_password": "password",
+    "new_password": "newStrongPassword456",
+    "new_password_confirmation": "newStrongPassword456"
 }
 ```
 
-**Response (200)**
-```json
-{
-  "success": true,
-  "message": "Your password has been updated successfully."
-}
-```
-
-<br>
-
-#### 4. Deactivate/Reactivate Account
-Changes the user's account status.
-
-**Method**: `PATCH`
-
-**Endpoint**: `/api/account/{status}`
-
-**URL Parameters**: 
-
-**Response (200)**
-```json
-{
-  "success": true,
-  "message": "Successfully logged out from all devices."
-}
-```
-
-<br>
-```
-
-<br>
-<br>
-
-### API Key Management
-Endpoints for managing user-generated API keys.
-
-#### 1. List API Keys
-Retrieves all API keys belonging to the user.
-
-**Method**: `GET`
-
-**Endpoint**: `/api/keys`
-
-**Response (200)**
+**Response (200 OK)**
 ```json
 {
 	"success": true,
-	"message": "All API keys of the user!",
-	"data": [
-		{
-			"id": 1,
-			"key": "q2BxPBbOQxrqsIhuOt0koL3O3hHLTGMu",
-			"expires_at": "2026-01-09T21:20:57.000000Z",
-			"created_at": "2025-10-11T21:20:57.000000Z"
-		},
-		{
-			"id": 2,
-			"key": "EDym2mBctORQo0QgGtHkSDnbEUiYsaVC",
-			"expires_at": "2026-01-09T21:21:08.000000Z",
-			"created_at": "2025-10-11T21:21:08.000000Z"
-		}
-	],
+	"message": "Your password has been updated successfully.",
+	"data": null,
 	"errors": []
 }
 ```
 
 <br>
 
-#### 2. Create API Key
+#### 4. Inactive/Reactivate/Suspend Account
+Changes the user's account status.
+
+**Method**: `PATCH`
+
+**Endpoint**: `/api/account/{status}`
+
+**Response (200 OK)**
+```json
+{
+	"success": true,
+	"message": "Account inactivated successfully!",
+	"data": null,
+	"errors": []
+}
+```
+> *Message will be displayed based on the status*
+
+<br>
+<br>
+
+### ↪ API Key Management
+Endpoints for managing user-generated API keys.
+
+#### 1. Create API Key
 Creates a new API key.
 > Important: The `plain_text_token` is only returned once upon creation. Store it securely.
 
@@ -574,7 +583,7 @@ Creates a new API key.
 }
 ```
 
-**Response (200)**
+**Response (201 Created)**
 ```json
 {
 	"success": true,
@@ -592,6 +601,40 @@ Creates a new API key.
 
 <br>
 
+#### 2. List API Keys
+Retrieves all API keys belonging to the user.
+
+**Method**: `GET`
+
+**Endpoint**: `/api/keys`
+
+**Response (200 OK)**
+```json
+{
+	"success": true,
+	"message": "All API keys of the user!",
+	"data": [
+		{
+			"id": 1,
+			"name": "Website API",
+			"key": "aBUaIu0g6vYSk8SKU96v3nCmSioLEVLb",
+			"expires_at": "2026-01-10T05:43:31.000000Z",
+			"created_at": "2025-10-12T05:43:31.000000Z"
+		},
+		{
+			"id": 2,
+			"name": "Mobile APP",
+			"key": "SKUnCmSiu96oLEVLbaBUaIv30g6vYSk8",
+			"expires_at": "2026-01-10T05:43:42.000000Z",
+			"created_at": "2025-10-12T05:43:42.000000Z"
+		}
+	],
+	"errors": []
+}
+```
+
+<br>
+
 #### 3. Regenerate API Key
 Generates a new token for an existing API key.
 
@@ -599,14 +642,14 @@ Generates a new token for an existing API key.
 
 **Endpoint**: `/api/keys/{id}`
 
-**Response (200)**
+**Response (200 OK)**
 ```json
 {
 	"success": true,
 	"message": "API key regenerated successfully!",
 	"data": {
-		"key": "9QYu1EUfFDhRHUG2B8Ac3FtvxqXHAsDr",
-		"secret": "LskXhXjcpBT3aIPu8y6GbmlKsuJiONNoW03SlU6ByIbP489VOFzbIogGe3WUm7gq",
+		"key": "hRHUG2B8AsDc3F9QYutvxqXHAr1EUfFD",
+		"secret": "gqLskXhXjcpBT3aIPu8y6GbmlKsuJiONNoW03SlU6ByIbP489VOFzbIogGe3WUm7",
 		"abilities": null
 	},
 	"errors": []
@@ -622,7 +665,7 @@ Deletes an API key.
 
 **Endpoint**: `/api/keys/{id}`
 
-**Response (200)**
+**Response (200 OK)**
 ```json
 {
 	"success": true,

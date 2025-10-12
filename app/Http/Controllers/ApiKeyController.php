@@ -18,7 +18,7 @@ class ApiKeyController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        $keys = $user->apiKeys()->get(['id', 'key', 'expires_at', 'created_at']);
+        $keys = $user->apiKeys()->get(['id', 'name', 'key', 'expires_at', 'created_at']);
         return $this->apiResponse(success: true, message: __('app.API_KEY_ALL'), data: $keys);
     }
 

@@ -110,14 +110,14 @@ class AuthService{
     {
         $this->addLog(action: self::$logKey['logout'], user: Auth::id());
         $request->user()->currentAccessToken()->delete();
-        return $this->apiResponse(success: true, message: __('auth.LOGGED_OUT'));
+        return $this->apiResponse(success: true, message: __('app.LOGGED_OUT'));
     }
 
     public function logoutAll(Request $request)
     {
         $this->addLog(action: self::$logKey['logout_all'], user: Auth::id());
         $request->user()->tokens()->delete();
-        return $this->apiResponse(success: true, message: __('auth.LOGGED_OUT_ALL'));
+        return $this->apiResponse(success: true, message: __('app.LOGGED_OUT_ALL'));
     }
 
     public function activeDevices(Request $request)
