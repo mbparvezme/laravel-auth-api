@@ -1,0 +1,54 @@
+{
+    "title": "Failed Jobs",
+    "method": "POST",
+    "fields": [
+        {
+            "name": "uuid",
+            "type": "text",
+            "label": "Uuid",
+            "rules": "required",
+            "default": null,
+            "options": []
+        },
+        {
+            "name": "connection",
+            "type": "textarea",
+            "label": "Connection",
+            "rules": "required",
+            "default": null,
+            "options": []
+        },
+        {
+            "name": "queue",
+            "type": "textarea",
+            "label": "Queue",
+            "rules": "required",
+            "default": null,
+            "options": []
+        },
+        {
+            "name": "payload",
+            "type": "text",
+            "label": "Payload",
+            "rules": "required",
+            "default": null,
+            "options": []
+        },
+        {
+            "name": "exception",
+            "type": "text",
+            "label": "Exception",
+            "rules": "required",
+            "default": null,
+            "options": []
+        },
+        {
+            "name": "failed_at",
+            "type": "datetime-local",
+            "label": "Failed At",
+            "rules": "required",
+            "default": "CURRENT_TIMESTAMP",
+            "options": []
+        }
+    ]
+}

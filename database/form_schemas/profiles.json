@@ -1,0 +1,70 @@
+{
+    "title": "Profiles",
+    "method": "POST",
+    "fields": [
+        {
+            "name": "user_id",
+            "type": "text",
+            "label": "User Id",
+            "rules": "required",
+            "default": null,
+            "options": []
+        },
+        {
+            "name": "profile_picture",
+            "type": "file",
+            "label": "Profile Picture",
+            "rules": "",
+            "default": null,
+            "options": []
+        },
+        {
+            "name": "mobile",
+            "type": "tel",
+            "label": "Mobile",
+            "rules": "",
+            "default": null,
+            "options": []
+        },
+        {
+            "name": "address",
+            "type": "text",
+            "label": "Address",
+            "rules": "",
+            "default": null,
+            "options": []
+        },
+        {
+            "name": "dob",
+            "type": "date",
+            "label": "Dob",
+            "rules": "",
+            "default": null,
+            "options": []
+        },
+        {
+            "name": "gender",
+            "type": "text",
+            "label": "Gender",
+            "rules": "",
+            "default": null,
+            "options": []
+        },
+        {
+            "name": "bio",
+            "type": "textarea",
+            "label": "Bio",
+            "rules": "",
+            "default": null,
+            "options": []
+        },
+        {
+            "name": "pending_email",
+            "type": "email",
+            "label": "Pending Email",
+            "rules": "email",
+            "default": null,
+            "options": []
+        }
+    ]
+}

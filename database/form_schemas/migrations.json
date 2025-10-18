@@ -1,0 +1,22 @@
+{
+    "title": "Migrations",
+    "method": "POST",
+    "fields": [
+        {
+            "name": "migration",
+            "type": "text",
+            "label": "Migration",
+            "rules": "required",
+            "default": null,
+            "options": []
+        },
+        {
+            "name": "batch",
+            "type": "text",
+            "label": "Batch",
+            "rules": "required",
+            "default": null,
+            "options": []
+        }
+    ]
+}

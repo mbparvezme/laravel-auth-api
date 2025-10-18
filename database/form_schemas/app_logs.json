@@ -1,0 +1,30 @@
+{
+    "title": "App Logs",
+    "method": "POST",
+    "fields": [
+        {
+            "name": "user",
+            "type": "text",
+            "label": "User",
+            "rules": "required",
+            "default": null,
+            "options": []
+        },
+        {
+            "name": "action",
+            "type": "text",
+            "label": "Action",
+            "rules": "required",
+            "default": null,
+            "options": []
+        },
+        {
+            "name": "data",
+            "type": "textarea",
+            "label": "Data",
+            "rules": "required",
+            "default": null,
+            "options": []
+        }
+    ]
+}

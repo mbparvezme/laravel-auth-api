@@ -1,0 +1,54 @@
+{
+    "title": "Users",
+    "method": "POST",
+    "fields": [
+        {
+            "name": "name",
+            "type": "text",
+            "label": "Name",
+            "rules": "required",
+            "default": null,
+            "options": []
+        },
+        {
+            "name": "email",
+            "type": "email",
+            "label": "Email",
+            "rules": "required|email",
+            "default": null,
+            "options": []
+        },
+        {
+            "name": "email_verified_at",
+            "type": "email",
+            "label": "Email Verified At",
+            "rules": "email",
+            "default": null,
+            "options": []
+        },
+        {
+            "name": "password",
+            "type": "password",
+            "label": "Password",
+            "rules": "required",
+            "default": null,
+            "options": []
+        },
+        {
+            "name": "remember_token",
+            "type": "text",
+            "label": "Remember Token",
+            "rules": "",
+            "default": null,
+            "options": []
+        },
+        {
+            "name": "status",
+            "type": "text",
+            "label": "Status",
+            "rules": "required",
+            "default": "1",
+            "options": []
+        }
+    ]
+}

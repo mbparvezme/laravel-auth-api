@@ -1,0 +1,46 @@
+{
+    "title": "Jobs",
+    "method": "POST",
+    "fields": [
+        {
+            "name": "queue",
+            "type": "text",
+            "label": "Queue",
+            "rules": "required",
+            "default": null,
+            "options": []
+        },
+        {
+            "name": "payload",
+            "type": "text",
+            "label": "Payload",
+            "rules": "required",
+            "default": null,
+            "options": []
+        },
+        {
+            "name": "attempts",
+            "type": "text",
+            "label": "Attempts",
+            "rules": "required",
+            "default": null,
+            "options": []
+        },
+        {
+            "name": "reserved_at",
+            "type": "text",
+            "label": "Reserved At",
+            "rules": "",
+            "default": null,
+            "options": []
+        },
+        {
+            "name": "available_at",
+            "type": "text",
+            "label": "Available At",
+            "rules": "required",
+            "default": null,
+            "options": []
+        }
+    ]
+}
