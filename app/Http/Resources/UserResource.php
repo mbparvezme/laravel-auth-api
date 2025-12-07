@@ -21,7 +21,7 @@ class UserResource extends JsonResource
             'profile'   => $this->profile ? [
                 'profile_picture' => $this->profile->profile_picture,
                 'mobile'          => $this->profile->mobile,
-                'address'         => $this->profile->address,
+                'address'         => $this->profile->addresses,
                 'dob'             => $this->profile->dob,
                 'gender'          => $this->profile->gender,
                 'bio'             => $this->profile->bio,

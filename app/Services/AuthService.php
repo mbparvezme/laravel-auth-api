@@ -38,8 +38,9 @@ class AuthService{
 
             // Check if email already exists and banned/deleted
             $existingUser = User::where('email', $validated['email'])->first();
-            if ($resp = $this->checkUserStatus($existingUser)) {
-                return $resp;
+
+            if ($existingUser && $existingUser->status == -1) {
+                return $this->apiResponse(success: false, message: __('app.USER_BLOCKED'), code: 403);
             }
 
             $this->user = User::create($validated);
@@ -50,10 +51,7 @@ class AuthService{
             
             $this->addLog(action: self::$logKey['registration_success'], user: $this->user->id);
             return $this->apiResponse(success: true, message: __('app.ACCOUNT_CREATED'),
-                data: [
-                    'user'  => new UserResource($this->user),
-                    'token' => $token,
-                ],
+                data: ['user'  => new UserResource($this->user), 'token' => $token],
                 code: 201
             );
         } catch (\Throwable $th) {
@@ -74,27 +72,27 @@ class AuthService{
 
         if (!$this->user) {
             $this->addLog(action: self::$logKey['id_err'], data: ['userid' => $request->userid]);
-            return $this->apiResponse(success: false, message: __('app.INVALID_LOGIN'));
+            return $this->apiResponse(success: false, message: __('app.INVALID_LOGIN'), code: 404);
         }
 
-        if ($resp = $this->checkUserStatus($this->user)) {
-            return $resp;
+        if ($this->user->status == -1) {
+            return $this->blockedUser();
         }
 
         if (!Hash::check($request->password, $this->user->password)) {
             $this->addLog(action: self::$logKey['pass_err'], data: ['user' => $request->userid]);
-            return $this->apiResponse(success: false, message: __('app.INVALID_LOGIN'));
+            return $this->apiResponse(success: false, message: __('app.INVALID_LOGIN'), code: 404);
         }
 
         $token = $this->user->createToken('authToken')->plainTextToken;
         $this->updateTokenAttributes($request);
 
         $this->addLog(action: self::$logKey['login_ok'], user: $this->user->id);
-        return $this->apiResponse(success: true, message: __('app.USER_LOGIN'),
-            data: [
-                'user' => new UserResource($this->user),
-                'token' => $token,
-            ]
+
+        return $this->apiResponse(
+            success: true,
+            message: __('app.USER_LOGIN'),
+            data: ['user' => new UserResource($this->user), 'token' => $token]
         );
     }
 

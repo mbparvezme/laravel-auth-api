@@ -29,7 +29,7 @@ trait AppTrait
         $m = $message ?? ($success ? __('app.SUCCESS_COMMON') : __('app.ERROR_COMMON'));
         return response()->json([
             'success' => $success,
-            'message' => $m,
+            'message' => $success ? $m : $errors,
             'data'    => $data,
             'errors'  => $errors,
         ], $code);
@@ -75,17 +75,9 @@ trait AppTrait
         return $deviceName;
     }
 
-    protected function checkUserStatus(?User $user)
+    protected function blockedUser()
     {
-        if (!$user) {
-            return null;
-        }
-
-        if ($user->status == -1) {
-            return $this->apiResponse(success: false, message: __('app.USER_BLOCKED'), code: 403);
-        }
-
-        return null;
+        return $this->apiResponse(success: false, message: __('app.USER_BLOCKED'), code: 403);
     }
 
 }

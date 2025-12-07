@@ -37,8 +37,8 @@ class PasswordService{
             return $this->apiResponse(success: false, message: __('app.PASS_RESET_MSG'), code: 404);
         }
 
-        if ($resp = $this->checkUserStatus($user)) {
-            return $resp;
+        if ($user->status == -1) {
+          return $this->blockedUser();
         }
 
         $status = Password::sendResetLink($request->only('email'));

@@ -26,7 +26,7 @@ return [
     'EMAIL_VERIFIED'                => 'Your email has been successfully verified!',
 
     // Password related
-    'PASS_RESET_MSG'                => 'A password reset link has been sent to your email address.',
+    'PASS_RESET_MSG'                => 'If an account exists with the provided email, a password reset link has been sent.',
     'RESET_PASS_ERR'                => 'Password reset error!',
     'RESET_PASS_OK'                 => 'Password updated successfully! You can now log in with your new password.',
     'UNAUTH_PASS_UPDATE'            => 'Password update error!',
