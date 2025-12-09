@@ -35,8 +35,9 @@ Route::group(['middleware' => ['auth:sanctum', 'throttle:10,1']], function () {
             Route::delete('{id}',   [ApiKeyController::class, 'destroy']);
         });
 
+        Route::get('profile',           [ProfileController::class, 'index']);
+
         Route::prefix('account')->group(function () {
-            Route::get('/',             [ProfileController::class, 'index']);
             Route::patch('/email',      [ProfileController::class, 'updateEmail']);
             Route::post('password',     [PasswordController::class, 'updatePassword']);
             Route::patch('{status}',    [ProfileController::class, 'accountStatus']);

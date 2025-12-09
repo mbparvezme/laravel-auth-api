@@ -1,17 +1,18 @@
 type: collection.insomnia.rest/5.0
+schema_version: "5.1"
 name: Auth API
 meta:
-  id: wrk_6975ad11d05a4089a3310bdf6edf01c5
-  created: 1721946869160
-  modified: 1721946869160
+  id: wrk_7488a5b324ce4814ab48c9d81cac84a7
+  created: 1722406174195
+  modified: 1725441720002
   description: ""
 collection:
-  - url: "{{ _.OPEN_API }}/dashboard"
+  - url: "{{ _.OPEN_API }}/active-device"
     name: Dashboard
     meta:
-      id: req_1df8347e308b4e5db8b3df8f980740e4
+      id: req_f4eacfa3d3294e0a83a0471a94635972
       created: 1722112869619
-      modified: 1723845130170
+      modified: 1760091939456
       isPrivate: false
       description: ""
       sortKey: -1711122815805.5195
@@ -19,12 +20,6 @@ collection:
     headers:
       - name: User-Agent
         value: insomnia/9.3.2
-        id: pair_b64ed0ebd8fa4a5583e21d51190c610d
-      - id: pair_88a34cdf9f9b4089bf4b756d4f382a64
-        name: ""
-        value: ""
-        description: ""
-        disabled: false
     authentication:
       type: bearer
       token: "{{ _.TOKEN }}"
@@ -38,7 +33,7 @@ collection:
       rebuildPath: true
   - name: Authentication
     meta:
-      id: fld_25e1dac8cfbd48e6928d46bee0757ef0
+      id: fld_169922ae8f324388a24748181c540f6d
       created: 1723392675326
       modified: 1723392675326
       sortKey: -1723392675326
@@ -47,9 +42,9 @@ collection:
       - url: "{{ _.OPEN_API }}/register"
         name: Registration
         meta:
-          id: req_cf535c51931b475bbee25717c1793c56
+          id: req_2d414481b4db46f0b5af1ef905a435ab
           created: 1712606488974
-          modified: 1760234563968
+          modified: 1765009819159
           isPrivate: false
           description: ""
           sortKey: -1723392690786
@@ -59,19 +54,15 @@ collection:
           text: |
             {
                 "name": "John Doe",
-                "email": "email4@domain.com",
+                "email": "email3@domain.com",
                 "password": "password",
                 "password_confirmation": "password"
             }
         headers:
           - name: Content-Type
             value: application/json
-            id: pair_05b1c7b5a5244c338e5d0d17f7cae410
-          - id: pair_c169c49b8dd14c58ae1ac2c89e39b1f1
-            name: Accept
+          - name: Accept
             value: application/json
-            description: ""
-            disabled: false
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -83,9 +74,9 @@ collection:
       - url: "{{ _.OPEN_API }}/login"
         name: Login
         meta:
-          id: req_8a940e54d8ee437a94395ca1f1239397
+          id: req_cf265fe186dc4df19d5d72f798250f08
           created: 1712613387718
-          modified: 1760246558752
+          modified: 1759862412410
           isPrivate: false
           description: ""
           sortKey: -1723392690761
@@ -113,9 +104,9 @@ collection:
       - url: "{{ _.OPEN_API }}/password/forgot"
         name: Send pass reset link
         meta:
-          id: req_90c9cb6edad845499c826f1ccf30e7a5
+          id: req_9e0ad9931b4145d5a69487f774789899
           created: 1713467274208
-          modified: 1760248294904
+          modified: 1759777306323
           isPrivate: false
           description: ""
           sortKey: -1723392690436
@@ -137,13 +128,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.OPEN_API }}/password/reset/{{ _.PASS_RESET_TOKEN
-          }}?email=test%40example.com"
+      - url: "{{ _.OPEN_API }}/{{ _.PASS_RESET_LINK }}"
         name: Reset pass
         meta:
-          id: req_a09dcc82b35343cba0cb935be93bd475
+          id: req_f2cc72ef7f36475da5612038b2ef594f
           created: 1713467293291
-          modified: 1760248653959
+          modified: 1759780311426
           isPrivate: false
           description: ""
           sortKey: -1723392690386
@@ -155,7 +145,7 @@ collection:
             	"email" : "test@example.com",
               "password": "password2",
               "password_confirmation": "password2",
-            	"token": "{{ _.PASS_RESET_TOKEN }}"
+            	"token" : "{{ _.PASS_RESET_TOKEN }}"
             }
         headers:
           - name: Content-Type
@@ -171,9 +161,9 @@ collection:
       - url: "{{ _.OPEN_API }}/logout"
         name: Logout
         meta:
-          id: req_638b81dd577d47d7a25c1b3c8b2f4bcd
+          id: req_ae803092fd21456eac9b10c114b3c25b
           created: 1722112565644
-          modified: 1760243656074
+          modified: 1759254971237
           isPrivate: false
           description: ""
           sortKey: -1723392690486
@@ -192,7 +182,7 @@ collection:
       - url: "{{ _.OPEN_API }}/logout-all"
         name: Logout all
         meta:
-          id: req_bb9462e0e24c4a1cbce64d34c40df6da
+          id: req_8e09c8219eea433e9f37e7780f34b511
           created: 1759776948761
           modified: 1759776980848
           isPrivate: false
@@ -212,7 +202,7 @@ collection:
           rebuildPath: true
   - name: Profile management
     meta:
-      id: fld_622fc11535884329b4b3d707525992c0
+      id: fld_3d06c9285b2f4bcd899964074d537943
       created: 1723392737732
       modified: 1723845085462
       sortKey: -1711266397175.4531
@@ -221,9 +211,9 @@ collection:
       - url: "{{ _.OPEN_API }}/profile"
         name: Profile
         meta:
-          id: req_e26eb80b4acd411293d64c7015f9eef9
+          id: req_eaa0cd8c274147b6b8f54c5032dee094
           created: 1722113354263
-          modified: 1723392757250
+          modified: 1765260419139
           isPrivate: false
           description: ""
           sortKey: -1723392757169
@@ -231,12 +221,6 @@ collection:
         headers:
           - name: User-Agent
             value: insomnia/9.3.2
-            id: pair_b64ed0ebd8fa4a5583e21d51190c610d
-          - id: pair_88a34cdf9f9b4089bf4b756d4f382a64
-            name: ""
-            value: ""
-            description: ""
-            disabled: false
         authentication:
           type: bearer
           token: "{{ _.TOKEN }}"
@@ -251,7 +235,7 @@ collection:
       - url: "{{ _.OPEN_API }}/profile"
         name: Profile update
         meta:
-          id: req_1deccb9f07fa449d85044d71d3631e5a
+          id: req_2217a0c810ff41d7b3629600c18fa631
           created: 1722369406941
           modified: 1724240492514
           isPrivate: false
@@ -275,12 +259,6 @@ collection:
             value: application/json
           - name: User-Agent
             value: insomnia/9.3.2
-            id: pair_b64ed0ebd8fa4a5583e21d51190c610d
-          - id: pair_88a34cdf9f9b4089bf4b756d4f382a64
-            name: ""
-            value: ""
-            description: ""
-            disabled: false
         authentication:
           type: bearer
           token: "{{ _.TOKEN }}"
@@ -292,12 +270,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.OPEN_API }}/account/password"
+      - url: "{{ _.OPEN_API }}/password"
         name: Update password
         meta:
-          id: req_cc4ce2fac7fb4dc0836d80a39c8e0a2e
+          id: req_d1aa7af4096a4daaa454a032beb977f5
           created: 1722371873485
-          modified: 1760244412303
+          modified: 1759255341626
           isPrivate: false
           description: ""
           sortKey: -1723392757119
@@ -306,21 +284,15 @@ collection:
           mimeType: application/json
           text: |
             {
-                "current_password": "password",
-                "new_password": "passwordx",
-                "new_password_confirmation": "passwordx"
+                "current_password": "passwordx",
+                "new_password": "password",
+                "new_password_confirmation": "password"
             }
         headers:
           - name: Content-Type
             value: application/json
           - name: User-Agent
             value: insomnia/9.3.2
-            id: pair_b64ed0ebd8fa4a5583e21d51190c610d
-          - id: pair_88a34cdf9f9b4089bf4b756d4f382a64
-            name: ""
-            value: ""
-            description: ""
-            disabled: false
         authentication:
           type: bearer
           token: "{{ _.TOKEN }}"
@@ -332,12 +304,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.OPEN_API }}/account/email"
+      - url: "{{ _.OPEN_API }}/profile/email"
         name: Update email
         meta:
-          id: req_5769c2276d084306932d465cbbc44c78
+          id: req_15f27d248b264907adb0179460def9a6
           created: 1722373871963
-          modified: 1760243882494
+          modified: 1724240549727
           isPrivate: false
           description: ""
           sortKey: -1723392757144
@@ -346,20 +318,13 @@ collection:
           mimeType: application/json
           text: |-
             {
-                "email": "email99@domain.com",
-            		"password": "password"
+                "email": "email3@domain.com"
             }
         headers:
           - name: Content-Type
             value: application/json
           - name: User-Agent
             value: insomnia/9.3.2
-            id: pair_b64ed0ebd8fa4a5583e21d51190c610d
-          - id: pair_88a34cdf9f9b4089bf4b756d4f382a64
-            name: ""
-            value: ""
-            description: ""
-            disabled: false
         authentication:
           type: bearer
           token: "{{ _.TOKEN }}"
@@ -374,7 +339,7 @@ collection:
       - url: "{{ _.OPEN_API }}/profile/picture"
         name: Profile photo
         meta:
-          id: req_c061d7f532b3405db74c0a8ad9f2ff16
+          id: req_202462bac4de42c2a2b8141cea53ed8e
           created: 1723395710029
           modified: 1723453582254
           isPrivate: false
@@ -384,13 +349,12 @@ collection:
         body:
           mimeType: multipart/form-data
           params:
-            - id: pair_a75801aed5614dd28b89ea6f397d8298
-              name: file
+            - name: file
               value: ""
               description: ""
               disabled: false
-              type: file
               fileName: C:\Users\mbpar\Downloads\AI Downloaded images\11.webp
+              type: file
         headers:
           - name: Content-Type
             value: multipart/form-data
@@ -407,87 +371,9 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.OPEN_API }}/account/suspend"
-        name: Update status [banned]
-        meta:
-          id: req_2973a94a18074d98b7e251a011d15cc9
-          created: 1760245023162
-          modified: 1760246436463
-          isPrivate: false
-          description: ""
-          sortKey: -1723392757131.5
-        method: PATCH
-        body:
-          mimeType: application/json
-          text: |-
-            {
-                "email": "email99@domain.com",
-            		"password": "password"
-            }
-        headers:
-          - name: Content-Type
-            value: application/json
-          - name: User-Agent
-            value: insomnia/9.3.2
-            id: pair_b64ed0ebd8fa4a5583e21d51190c610d
-          - id: pair_88a34cdf9f9b4089bf4b756d4f382a64
-            name: ""
-            value: ""
-            description: ""
-            disabled: false
-        authentication:
-          type: bearer
-          token: "{{ _.TOKEN }}"
-        settings:
-          renderRequestBody: true
-          encodeUrl: true
-          followRedirects: global
-          cookies:
-            send: true
-            store: true
-          rebuildPath: true
-      - url: "{{ _.OPEN_API }}/account/inactive"
-        name: Update status [reactive]
-        meta:
-          id: req_c6a46026caee4125b312c7714e65b52f
-          created: 1760245037193
-          modified: 1760246677174
-          isPrivate: false
-          description: ""
-          sortKey: -1723392757125.25
-        method: PATCH
-        body:
-          mimeType: application/json
-          text: |-
-            {
-                "email": "email99@domain.com",
-            		"password": "password"
-            }
-        headers:
-          - name: Content-Type
-            value: application/json
-          - name: User-Agent
-            value: insomnia/9.3.2
-            id: pair_b64ed0ebd8fa4a5583e21d51190c610d
-          - id: pair_88a34cdf9f9b4089bf4b756d4f382a64
-            name: ""
-            value: ""
-            description: ""
-            disabled: false
-        authentication:
-          type: bearer
-          token: "{{ _.TOKEN }}"
-        settings:
-          renderRequestBody: true
-          encodeUrl: true
-          followRedirects: global
-          cookies:
-            send: true
-            store: true
-          rebuildPath: true
   - name: Settings & Logs
     meta:
-      id: fld_75a3e5e675124ac1ba148b30f4e70230
+      id: fld_05afe10d3726428496e80058a2ac594c
       created: 1723394522765
       modified: 1723394528294
       sortKey: -1711266397138.0508
@@ -495,32 +381,32 @@ collection:
     children:
       - name: Settings
         meta:
-          id: fld_95ab5aa7d60f4af785788bf87101baac
+          id: fld_5d70c4dae14144cb9b4e757065d65a57
           created: 1723395514312
           modified: 1723395514312
           sortKey: -1723395514312
           description: ""
       - name: Logs
         meta:
-          id: fld_72fe534919374774ba1baa694fa829c7
+          id: fld_5391b38ffbac44fe95534780dc8c260f
           created: 1723395542908
           modified: 1723395546221
           sortKey: -1723395237122.25
           description: ""
   - name: Verification
     meta:
-      id: fld_d62299dd36a34e9f8e515d8366a9dbdf
+      id: fld_ad996eda170040f9afd495c850be742f
       created: 1723394582134
       modified: 1724185471168
       sortKey: -1717329536250.7266
       description: ""
     children:
-      - url: "{{ _.OPEN_API }}/resend-verification-email"
+      - url: "{{ _.OPEN_API }}/email/verification/send"
         name: Resend verification email
         meta:
-          id: req_a4a0bc3f18984655bd77f04fd8807c78
+          id: req_f8c64db5a1cf49d5ba422fefc6291c76
           created: 1723394642823
-          modified: 1760234581494
+          modified: 1759249440084
           isPrivate: false
           description: ""
           sortKey: -1723394642823
@@ -528,9 +414,6 @@ collection:
         headers:
           - name: User-Agent
             value: insomnia/9.3.3
-        authentication:
-          type: bearer
-          token: hSnqtIsqLVkYKav5xASk58uz5Vdzr1A3lJHsHmZB189d6863
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -542,7 +425,7 @@ collection:
       - url: "{{ _.OPEN_API }}/{{ _.EMAIL_VERIFY_LINK }}"
         name: Verify email
         meta:
-          id: req_8c6a55a2777c4679b9dd508b2d0e1a5c
+          id: req_9f210c989130417e99b55e93e84e95f8
           created: 1723394675184
           modified: 1759249444629
           isPrivate: false
@@ -562,18 +445,18 @@ collection:
           rebuildPath: true
   - name: API key
     meta:
-      id: fld_3d5d021fcd01436ca4731fee51f349b8
+      id: fld_01301eeca4b04b4d8ec1c916b048ec1f
       created: 1759850687540
       modified: 1759850687540
       sortKey: -1714297966713.0898
       description: ""
     children:
-      - url: "{{ _.OPEN_API }}/keys"
+      - url: "{{ _.OPEN_API }}/api-keys"
         name: Generate key
         meta:
-          id: req_85c2127efeec49c6acfbf3ffc44ed054
+          id: req_34040eb7d93140a5858330087a3331d5
           created: 1759850687545
-          modified: 1760247820196
+          modified: 1759864710199
           isPrivate: false
           description: ""
           sortKey: -1723394642823
@@ -582,7 +465,7 @@ collection:
           mimeType: application/json
           text: |-
             {
-            	"name": "Mobile APP"
+            	"name": "Website"
             }
         headers:
           - name: Content-Type
@@ -600,12 +483,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.OPEN_API }}/keys/2"
+      - url: "{{ _.OPEN_API }}/api-keys/8"
         name: Regenerate key
         meta:
-          id: req_30ff324418074548b403532b7bb26400
+          id: req_866bcd3bda8d4ca68f12e1a7f3874906
           created: 1759850687548
-          modified: 1760218159549
+          modified: 1759865041850
           isPrivate: false
           description: ""
           sortKey: -1723393807513.5
@@ -624,12 +507,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.OPEN_API }}/keys/2"
+      - url: "{{ _.OPEN_API }}/api-keys/7"
         name: Delete key
         meta:
-          id: req_17e04de91f11488691d6c2406338ca16
+          id: req_4d24fce6c42e4548bf3985613525fc99
           created: 1759850733671
-          modified: 1760218381711
+          modified: 1759865058986
           isPrivate: false
           description: ""
           sortKey: -1723393389858.75
@@ -648,12 +531,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.OPEN_API }}/keys"
+      - url: "{{ _.OPEN_API }}/api-keys"
         name: All keys
         meta:
-          id: req_b6980d430d9a42a989437ecfe2bd7a55
+          id: req_7718ace0c74d4fb2818cc4cd96598238
           created: 1759850762789
-          modified: 1760217660345
+          modified: 1759862479991
           isPrivate: false
           description: ""
           sortKey: -1723393389758.75
@@ -672,65 +555,80 @@ collection:
             send: true
             store: true
           rebuildPath: true
+      - url: "{{ _.OPEN_API }}/api-data-test"
+        name: Test API key
+        meta:
+          id: req_5feb112ff39a4e9ca059b4a66599eb01
+          created: 1759900508830
+          modified: 1759902071333
+          isPrivate: false
+          description: ""
+          sortKey: -1723393073463.875
+        method: GET
+        body:
+          mimeType: ""
+          text: ""
+        headers:
+          - name: Content-Type
+            value: ""
+          - name: User-Agent
+            value: insomnia/9.3.3
+        authentication:
+          type: apikey
+          key: Authorization
+          value: api {{ _.APIKEY }}:{{ _.APISECRET }}
+          disabled: false
+          addTo: header
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
 cookieJar:
   name: Default Jar
   meta:
-    id: jar_51ff5526c54849208af1470e30549c1b
+    id: jar_3163714a469d49239bdda9c27296e513
     created: 1712606485582
-    modified: 1760248421755
+    modified: 1725706303647
   cookies:
-    - key: XSRF-TOKEN
-      value: eyJpdiI6IldSeHBNR1FOKzFiUkhFNjdsempwNUE9PSIsInZhbHVlIjoidisrVXp6STJQZ002YkNudnFyemhzN0lRcmtueXdGbEk3THA0cGxZWUJpUVNlL3ZUR1NBNDdzQlpVT1EyWkpKM3pTYWJzbDRMWkw1bnU0azh6KzlNRHpDeXNqdG5SVC9lbUc1eHVVMnd0TkpudUJrMGVvOGQwMEw0UXM2YUp3VUYiLCJtYWMiOiI2YWZlZDc5Mjg5MzUyOGZlYjYzNDRhZDNhOTM1YjY2NTAwYTVmZmNkYWQ0N2EzZDk1NjIyMDRjZmYzNmIzYzRkIiwidGFnIjoiIn0%3D
-      maxAge: 7200
+    - id: e932080b-8ebf-4136-8c22-c113fd800e8d
+      key: XSRF-TOKEN
+      value: eyJpdiI6ImZCaWNTNHdseGo1bEpibmFhMnF3VHc9PSIsInZhbHVlIjoiRm9LU2o1bUV6Q0ZRRW16NHRCYjFLdlhWOEdUR2s1WXBlbEFLSjFuNEVjZXNaekt0T0RLK1FaMmxPa2JhWWVoeWJKYjkrOU9ra3p6ZThxeURob2FHZnBMR090UC8xYjQ0ZitLS2Z3ZjJpWkZHeHNETFlHMGhPRFdPSE1MRkdPZjIiLCJtYWMiOiIzNTY1MmI5NGNjNGE0ZGQzZGQ4YjA1YWZkYjNjYTBhOTg1ZjdhY2FkMWNlYWViMzYyZGFlYjZmNjQ3OWM4MjE3IiwidGFnIjoiIn0%3D
       domain: 127.0.0.1
       path: /
+      secure: false
+      httpOnly: false
       hostOnly: true
-      creation: 2024-04-08T20:13:32.023Z
-      lastAccessed: 2025-10-12T05:53:41.755Z
-      sameSite: lax
-      id: 4201f3b5-b79c-4ac9-9f82-344ece38e314
-    - key: laravel_session
+    - id: 149c467c-85b4-43a0-b8cf-34bfce5a96c4
+      key: laravel_session
       value: eyJpdiI6Ik9OLzVBSXNqWXFLdmRCNS9TU1hQZHc9PSIsInZhbHVlIjoiLzBjUEk3UnJuRW9kZHNpTThmcjdRaXlXeGlXNXNkTjh0WVNTM1pnWVJXV3ZxTEROSEhzbEJEWVJHanRtS2dhekNRK1ZudmdUQXRncVY2Tk10aFdPRW1USWN6ZUZPdHdVdUVqQTIyUzZvUktieWhFWVpiZHkwTWs1WjM0ZDhKOUoiLCJtYWMiOiIwZWQxNWZmYjE1YTQwOWNkNWM0ODEyMTZhY2EzZmE5YjFmYWUxMjQ5ZjBmZjY3MWZhMDA1NWNkMjc2ZDA0YmY2IiwidGFnIjoiIn0%3D
-      maxAge: 7200
       domain: 127.0.0.1
       path: /
+      secure: false
       httpOnly: true
       extensions:
         - samesite=lax
       hostOnly: true
-      creation: 2024-04-08T20:13:32.024Z
-      lastAccessed: 2024-04-08T21:17:08.899Z
-      id: 729090d7-7319-4a5c-b8cc-21d8a18d9a48
-    - key: laravel_auth_api_session
-      value: eyJpdiI6InJmYUZWOEdPL2hpT2MvcWhrN3hsa2c9PSIsInZhbHVlIjoiQkt0dDlMc01xN2ltdGlOR3BtNloxWU1JNnpra3NzY1pLdHpyQVp4b2FnS2Q3RVU5MmptV2FCMEpZOUxXVHRuNXh6ZFZNUmhKZE1mcElqMW15ZDd2VmkxWEhJZEkzdnFKRmtmV3FZZGs2REc5ejV1M2lLRXRGQkZSWE5sTGJscGMiLCJtYWMiOiI3ZGVhMTRhZjZiNGVlMzZmZjEzZTE2YjE4OTMxMWM1YWQwYzczYjg0Zjk1ZjYwYjdjMTNjMDg1YThjZmVlZTgyIiwidGFnIjoiIn0%3D
-      maxAge: 7200
+    - id: 2acf8a78-6139-4841-8337-2cbdef9def69
+      key: laravel_auth_api_session
+      value: eyJpdiI6IlFoaktCcDZ1cHVkZCszS2YvMGNmanc9PSIsInZhbHVlIjoiUW9yajJZWGpWcWphUzFDUzVHd1NPTUt4QU9PMEh0QzBIbFo5YmNDZmUyazNXdVplb3FtcXpMazdmZ3dEamszbTF0bER1ZWlCN2ErNTkrQjB1dFl0RG12QjdybXNTQ2ZCRXB1Wjl3aStPc2pzNkZLcnhTd3JNMXFtcmZkc3l1WUMiLCJtYWMiOiI4ZjcyN2Y0Nzc3ZmRiMmMzNjY4NzBkYmZlYjg2OGIzZGRjYjA5MWU3M2JhYjJiYTYzYjZjMDI4NTQ1MDhkM2U0IiwidGFnIjoiIn0%3D
       domain: 127.0.0.1
       path: /
+      secure: false
       httpOnly: true
       hostOnly: true
-      creation: 2024-07-30T22:02:12.114Z
-      lastAccessed: 2024-08-21T11:48:49.721Z
-      sameSite: lax
-      id: fae0d372-b11b-49a3-89ff-cf03e754f884
-    - key: laravel-session
-      value: eyJpdiI6IjFXOXNpVEc3Q241bGN0WDZhK0E4cWc9PSIsInZhbHVlIjoiN3I5YUxESGdtNTNuQ213SHlpWG8zY01hcWx2eFdtNXhMekkrSEYzOW1QVnJYZzcvS2MyRVY1TmRIa29FMEtQUDNHRmIrcjl1VCtuYmNkN1VYTDRUUkt3Zi93RUprWjlzc3FUWWVZQWVQcnB3a3lIbVVwWkpydFJIMy9hR1poRkIiLCJtYWMiOiI3ZWEzZGViZDVkZDI3YjA0ZjNlMTZhNDNjZWI2MDcyOTQxNWZhOWZiODBmNWMxNGM5OGMwYjZkNmY4ZjNhYjkwIiwidGFnIjoiIn0%3D
-      maxAge: 7200
-      domain: 127.0.0.1
-      path: /
-      httpOnly: true
-      hostOnly: true
-      creation: 2025-10-07T19:04:04.888Z
-      lastAccessed: 2025-10-12T05:53:41.755Z
-      sameSite: lax
-      id: ff7b50b8-166c-42fb-95d0-0127f0752b9d
 environments:
   name: Base Environment
   meta:
-    id: env_0dd9d2c6fa2241c7a4d5fd4b10f5b79d
+    id: env_2c4e98bfea9b4cc492b64c3e5de696f4
     created: 1712606485577
-    modified: 1760248363030
+    modified: 1765260461974
     isPrivate: false
   data:
     OPEN_API: http://127.0.0.1:8000/api
-    TOKEN: zZVsS3tPJSrfGXN3rZrNiuismzlShyrGMvt3kqn31ba3a61b
-    PASS_RESET_TOKEN: eba46c1f89bdfffcbd89faac79bb798da34820b1b0f597b3fc37c15857c063d4
+    TOKEN: QGVqSVrzgi8by9p3TTrXxMnJF2yNXrwz7gWlsY0Ad04450be
+    APIKEY: tZbHfIF7ie7goWUuL6GdTX36FS0iJybf
+    APISECRET: x3qOQSEbA6wRVX8Vn2QyKv6yv1am9Ht1VfQT7xSZqXjMQINb4GSF7RAziTSvdtaY
