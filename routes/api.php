@@ -30,12 +30,13 @@ Route::group(['middleware' => ['auth:sanctum', 'throttle:10,1']], function () {
 
         Route::prefix('keys')->group(function () {
             Route::get('/',         [ApiKeyController::class, 'index']);
-            Route::post('/',        [ApiKeyController::class, 'storeByUser']);
+            Route::post('/',        [ApiKeyController::class, 'store']);
             Route::patch('{id}',    [ApiKeyController::class, 'regenerate']);
             Route::delete('{id}',   [ApiKeyController::class, 'destroy']);
         });
 
         Route::get('profile',           [ProfileController::class, 'index']);
+        Route::patch('profile',         [ProfileController::class, 'update']);
 
         Route::prefix('account')->group(function () {
             Route::patch('/email',      [ProfileController::class, 'updateEmail']);

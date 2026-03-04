@@ -9,12 +9,10 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    protected AuthService $authService;
 
-    public function __construct(AuthService $authService)
-    {
-        $this->authService = $authService;
-    }
+    public function __construct(
+        protected AuthService $authService
+    ){}
 
     public function registration(RegistrationRequest $request)
     {

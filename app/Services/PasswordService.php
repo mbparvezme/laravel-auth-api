@@ -6,13 +6,12 @@ use App\Models\User;
 use App\Traits\AppTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-// ====
 use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Validation\Rules\Password as RulesPassword;
 
-class PasswordService{
+class PasswordService {
 
     use AppTrait;
 
@@ -58,16 +57,16 @@ class PasswordService{
         // return $this->apiResponse(true, 'Password reset link generated', ['reset_url' => $resetUrl]);
     }
 
-
     public function resetPassword(Request $request, $token)
     {
         $request->validate([
           'token'    => 'required',
           'email'    => 'required|email',
-          'password' => 'required|string|min:8|confirmed',
+          'password' => ['required', 'confirmed', RulesPassword::defaults()],
         ]);
 
-        if(strtok($token, '&') !== $request->token){
+        // if(strtok($token, '&') !== $request->token){
+        if (hash_equals(strtok($token, '&'), $request->token)) {
             $this->addLog(action: self::$logKey['tempered_link'], data: ['email' => $request->email]);
             return $this->apiResponse(success: false, message: __('app.RESET_PASS_ERR'), code:  400);
         }
@@ -91,11 +90,14 @@ class PasswordService{
         return $this->apiResponse(success: false, message: __('app.RESET_PASS_ERR'), code:  400);
     }
 
-
     public function updatePassword(Request $request)
     {
-      $request->validate(['current_password' => 'required|string', 'new_password' => 'required|string|min:8|confirmed']);
-      $user = Auth::user();
+      $request->validate([
+        'current_password' => ['required', RulesPassword::defaults()],
+        'required|string',
+        'new_password' => ['required', 'confirmed', RulesPassword::defaults()],
+      ]);
+      $user = $request->user();
 
       if (!$user) {
         return $this->apiResponse(success: false, message: __('app.UNAUTH_PASS_UPDATE'), code: 401);

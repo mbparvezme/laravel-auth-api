@@ -7,12 +7,10 @@ use Illuminate\Http\Request;
 
 class PasswordController extends Controller
 {
-    protected PasswordService $passwordService;
 
-    public function __construct(PasswordService $passwordService)
-    {
-        $this->passwordService = $passwordService;
-    }
+    public function __construct(
+        protected PasswordService $passwordService
+    ){}
 
     public function requestPasswordReset(Request $request){
         return $this->passwordService->requestPasswordReset($request);

@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Http\Requests\RegistrationRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Traits\AppTrait;
@@ -12,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Validation\Rules\Password;
 
 class AuthService{
 
@@ -31,10 +32,15 @@ class AuthService{
         'verified' => 'VERIFIED',
     ];
 
-    public function registration(RegistrationRequest $request)
+    public function registration(Request $request)
     {
         try {
-            $validated = $request->validated();
+            // $validated = $request->validated();
+            $validated = $request->validate([
+                'name'      => ['required', 'max:255'],
+                'email'     => ['required', 'email', 'unique:users,email'],
+                'password'  => ['required', 'confirmed', Password::defaults()],
+            ]);
 
             // Check if email already exists and banned/deleted
             $existingUser = User::where('email', $validated['email'])->first();
@@ -96,7 +102,8 @@ class AuthService{
         );
     }
 
-    protected function updateTokenAttributes($request): void{
+    protected function updateTokenAttributes($request): void
+    {
         $accessToken = $this->user->tokens()->latest()->first();
         if ($accessToken) {
             DB::table('personal_access_tokens')->where('id', $accessToken->id)
@@ -138,6 +145,21 @@ class AuthService{
         if ($user->hasVerifiedEmail()) {
             $this->addLog(action: self::$logKey['verification_revisited'], user: $user->id);
             return $this->apiResponse(success: true, message: __('app.ALREADY_VERIFIED'));
+        }
+
+        if (app()->environment('local')) {
+            return $this->apiResponse(
+                success: true,
+                message: __('app.VERIFICATION_EMAIL_SEND'),
+                data: URL::temporarySignedRoute(
+                    'verification.verify',
+                    now()->addMinutes(60),
+                    [
+                        'id' => $user->getKey(),
+                        'hash' => sha1($user->getEmailForVerification()),
+                    ]
+                )
+            );
         }
 
         $user->sendEmailVerificationNotification();

@@ -35,6 +35,7 @@ return [
 
     // Profile related
     'USER_INFO'                     => 'User profile details!',
+    'PROFILE_UPDATED'               => 'User profile updated successfully!',
     'EMAIL_UPDATE_PASS_ERR'         => 'Password does not match!',
     'EMAIL_UPDATE_VERIFICATION_SENT'=> 'Email updated. Please check your new inbox to verify the address.',
     'EMAIL_UPDATE_INVALID_TOKEN'    => 'Invalid or expired verification link!',
@@ -42,11 +43,11 @@ return [
     'EMAIL_UPDATE_NOT_PENDING'      => 'No pending email change found!',
     'NEW_EMAIL_VERIFIED'            => 'Email verified and updated successfully.',
     // User status update
-    'ACTIVE'                    => 'Account has been activated!',
-    'REACTIVE'                  => 'Account has been reactivated!',
-    'INACTIVE'                  => 'Account inactivated successfully!',
-    'DELETE'                    => 'Account deleted successfully!',
-    'BANNED'                    => 'Account banded!',
+    'ACTIVE'                        => 'Account has been activated!',
+    'REACTIVE'                      => 'Account has been reactivated!',
+    'INACTIVE'                      => 'Account inactivated successfully!',
+    'DELETE'                        => 'Account deleted successfully!',
+    'BANNED'                        => 'Account banded!',
 
     // API Key related
     'API_KEY_ALL'                   => 'All API keys of the user!',
