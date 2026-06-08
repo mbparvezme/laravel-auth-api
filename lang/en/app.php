@@ -37,6 +37,12 @@ return [
     'STATUS_UPDATED'            => 'Account status updated successfully.',
     'INVALID_STATUS'            => 'Invalid account status provided.',
 
+    // API keys
+    'API_KEYS_FETCHED'          => 'API keys retrieved successfully.',
+    'API_KEY_CREATED'           => 'API key created. Store it securely — it will not be shown again.',
+    'API_KEY_REVOKED'           => 'API key revoked successfully.',
+    'API_KEY_NOT_FOUND'         => 'API key not found.',
+
     // Social auth
     'SOCIAL_REDIRECT'           => 'OAuth redirect URL generated.',
     'SOCIAL_AUTH_FAILED'        => 'Social authentication failed. Please try again.',

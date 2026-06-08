@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\UserStatus;
+use App\Features\ApiKeys\Models\ApiKey;
 use App\Notifications\ResetPasswordNotification;
 use App\Notifications\VerifyEmailNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -40,6 +41,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function logs(): HasMany
     {
         return $this->hasMany(AppLog::class);
+    }
+
+    public function apiKeys(): HasMany
+    {
+        return $this->hasMany(ApiKey::class);
     }
 
     public function sendEmailVerificationNotification(): void

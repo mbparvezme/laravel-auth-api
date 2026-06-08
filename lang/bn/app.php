@@ -37,6 +37,12 @@ return [
     'STATUS_UPDATED'            => 'অ্যাকাউন্টের অবস্থা সফলভাবে আপডেট হয়েছে।',
     'INVALID_STATUS'            => 'অবৈধ অ্যাকাউন্ট অবস্থা প্রদান করা হয়েছে।',
 
+    // API keys
+    'API_KEYS_FETCHED'          => 'API কী সফলভাবে পাওয়া গেছে।',
+    'API_KEY_CREATED'           => 'API কী তৈরি হয়েছে। এটি নিরাপদে সংরক্ষণ করুন — এটি আর দেখানো হবে না।',
+    'API_KEY_REVOKED'           => 'API কী সফলভাবে বাতিল করা হয়েছে।',
+    'API_KEY_NOT_FOUND'         => 'API কী পাওয়া যায়নি।',
+
     // Social auth
     'SOCIAL_REDIRECT'           => 'OAuth রিডাইরেক্ট URL তৈরি হয়েছে।',
     'SOCIAL_AUTH_FAILED'        => 'সোশ্যাল অথেনটিকেশন ব্যর্থ হয়েছে। আবার চেষ্টা করুন।',
