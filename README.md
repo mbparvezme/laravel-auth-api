@@ -7,8 +7,9 @@ A modular Laravel 13 authentication API starter kit. Drop it into any project an
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Getting Started](#getting-started)
-  - [Option A — Clone from GitHub](#option-a--clone-from-github)
-  - [Option B — Docker](#option-b--docker)
+  - [Option A — Local (PHP installed)](#option-a--local-php-installed)
+  - [Option B — Docker for development](#option-b--docker-for-development)
+  - [Option C — Pull from Docker Hub](#option-c--pull-from-docker-hub)
 - [Environment Variables](#environment-variables)
 - [API Reference](#api-reference)
   - [Response Format](#response-format)
@@ -65,7 +66,21 @@ A modular Laravel 13 authentication API starter kit. Drop it into any project an
 
 ## Getting Started
 
-### Option A — Clone from GitHub
+Choose the option that matches your situation:
+
+| | Option A | Option B | Option C |
+|---|---|---|---|
+| **PHP installed locally** | Required | Not needed | Not needed |
+| **MySQL installed locally** | Required | Not needed | Not needed |
+| **Source code needed** | Yes | Yes | No |
+| **Best for** | Local dev | Local dev (no PHP setup) | Deploying a published image |
+
+> **About the `vendor` folder and Docker**
+> The `vendor` folder is never included in the Docker image. The `Dockerfile` runs `composer install` during `docker build`, which creates `vendor` inside the image layer. Including `vendor` in the image would bloat it by 100–200 MB and break Docker's layer cache.
+
+---
+
+### Option A — Local (PHP installed)
 
 **Requirements:** PHP 8.2+, Composer, MySQL
 
@@ -90,9 +105,11 @@ The API is now running at `http://localhost:8000`.
 
 ---
 
-### Option B — Docker
+### Option B — Docker for development
 
 **Requirements:** Docker Desktop (or Docker Engine + Compose plugin)
+
+Docker replaces the need to install PHP and MySQL on your machine. You still clone the repository because you are **customizing the starter kit** — the source code is bind-mounted into the container so edits are reflected immediately without rebuilding.
 
 ```bash
 git clone https://github.com/your-username/laravel-auth-api.git
@@ -110,15 +127,15 @@ DB_USERNAME=laravel
 DB_PASSWORD=secret
 ```
 
-Then start the full stack:
+Start the full stack:
 
 ```bash
 docker compose up --build
 ```
 
-On first start the entrypoint waits for MySQL to become healthy, runs all migrations, then starts PHP-FPM. The API is available at `http://localhost:8080`.
+The entrypoint waits for MySQL to become healthy, runs all migrations, then starts PHP-FPM. The API is available at `http://localhost:8080`.
 
-**Useful Docker commands:**
+**Useful commands:**
 
 ```bash
 # Run artisan commands inside the container
@@ -134,7 +151,9 @@ docker compose down
 docker compose down -v
 ```
 
-**Production build:**
+**Build and publish your image:**
+
+Once you have customized the starter kit, build and push your own image:
 
 ```bash
 docker build -t your-org/laravel-auth-api:latest .
@@ -142,6 +161,61 @@ docker push your-org/laravel-auth-api:latest
 ```
 
 Set `APP_ENV=production` at runtime — the entrypoint automatically caches config, routes, views, and events on startup.
+
+---
+
+### Option C — Pull from Docker Hub
+
+**Requirements:** Docker Desktop (or Docker Engine + Compose plugin)
+
+Use this when you want to **run a published image** without cloning the repository — for example on a production server or in a CI/CD pipeline. You only need two files from the repository: the Hub compose file and the Nginx config.
+
+**Step 1 — Download the two required files**
+
+```bash
+# Compose file (references the image, not the source)
+curl -O https://raw.githubusercontent.com/your-username/laravel-auth-api/main/docker-compose.hub.yml
+
+# Nginx config (referenced by the compose file)
+mkdir -p docker/nginx
+curl -o docker/nginx/default.conf \
+  https://raw.githubusercontent.com/your-username/laravel-auth-api/main/docker/nginx/default.conf
+```
+
+**Step 2 — Create your `.env` file**
+
+```bash
+curl -O https://raw.githubusercontent.com/your-username/laravel-auth-api/main/.env.example
+mv .env.example .env
+```
+
+Edit `.env` and set at minimum:
+
+```env
+APP_KEY=          # no artisan available — generate online or on another machine
+APP_ENV=production
+APP_DEBUG=false
+DB_DATABASE=laravel_auth
+DB_USERNAME=laravel
+DB_PASSWORD=strongpassword
+DB_ROOT_PASSWORD=strongrootpassword
+FRONTEND_URL=https://your-frontend.com
+```
+
+**Step 3 — Start the stack**
+
+```bash
+docker compose -f docker-compose.hub.yml up -d
+```
+
+The entrypoint pulls the image, waits for MySQL, runs migrations, caches config/routes (because `APP_ENV=production`), and starts serving.
+
+**Update to a newer image version:**
+
+```bash
+docker compose -f docker-compose.hub.yml pull
+docker compose -f docker-compose.hub.yml up -d
+```
 
 ---
 
