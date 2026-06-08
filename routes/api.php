@@ -1,8 +1,11 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::prefix('v1')->group(base_path('routes/v1/auth.php'));
+Route::prefix('v1')->group(base_path('routes/v1/profile.php'));
+
+Route::fallback(fn () => response()->json([
+    'success' => false,
+    'message' => __('app.ROUTE_NOT_FOUND'),
+], 404));
