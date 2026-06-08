@@ -2,18 +2,25 @@
 
 namespace App\Models;
 
-use App\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class AppLog extends BaseModel
+class AppLog extends Model
 {
-
     const UPDATED_AT = null;
 
-    protected $fillable = [
-        'user',
-        'action',
-        'data',
-        'created_at',
-    ];
+    protected $fillable = ['user_id', 'action', 'data', 'user_visible'];
 
+    protected function casts(): array
+    {
+        return [
+            'data'         => 'array',
+            'user_visible' => 'boolean',
+        ];
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

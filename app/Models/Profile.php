@@ -2,25 +2,22 @@
 
 namespace App\Models;
 
-use App\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Profile extends BaseModel
+class Profile extends Model
 {
-
     protected $fillable = [
-        'user_id',
-        'profile_picture',
-        'mobile',
-        'pending_email',
-        'address',
-        'dob',
-        'gender',
-        'bio',
+        'user_id', 'profile_picture', 'mobile', 'address', 'dob', 'gender', 'bio',
     ];
 
-    public function user()
+    protected function casts(): array
+    {
+        return ['dob' => 'date'];
+    }
+
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
-
 }

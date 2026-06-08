@@ -1,65 +1,48 @@
 <?php
 
 return [
+    // Auth
+    'ACCOUNT_CREATED'           => 'Account created successfully! Please check your email to verify your account.',
+    'USER_LOGIN'                => 'Login successful!',
+    'LOGGED_OUT'                => 'Logged out successfully!',
+    'LOGGED_OUT_ALL'            => 'Logged out from all devices successfully!',
+    'INVALID_LOGIN'             => 'Invalid email or password.',
+    'USER_BANNED'               => 'Your account has been permanently banned.',
+    'USER_SUSPENDED'            => 'Your account has been suspended. Please contact support.',
 
-    /*
-    |--------------------------------------------------------------------------
-    | Authentication Language Lines
-    |--------------------------------------------------------------------------
-    |
-    | The following language lines are used during authentication for various
-    | messages that we need to display to the user. You are free to modify
-    | these language lines according to your application's requirements.
-    |
-    */
+    // Email verification
+    'EMAIL_VERIFIED'            => 'Your email has been verified successfully!',
+    'ALREADY_VERIFIED'          => 'Your email is already verified.',
+    'INVALID_VERIFICATION_LINK' => 'This verification link is invalid or has expired.',
+    'VERIFICATION_EMAIL_SENT'   => 'A verification link has been sent to your email.',
 
-    // Auth related
-    'ACCOUNT_CREATED'               => 'Account created successfully! Please check your email to verify your account.',
-    'INVALID_LOGIN'                 => 'Invalid login details! Please try again with valid credentials.',
-    'USER_LOGIN'                    => 'Login successful!',
-    'LOGGED_OUT'                    => 'Logged out successfully!',
-    'LOGGED_OUT_ALL'                => 'Logged out successfully from all devices!',
-    'ALL_LOGGED_DEVICES'            => 'Active devices!',
-    'ALREADY_VERIFIED'              => 'This email address is already verified.',
-    'VERIFICATION_EMAIL_SEND'       => 'An email verification link has been sent to your inbox. Please check your email and follow the instructions to complete the verification process.',
-    'INVALID_VERIFICATION_LINK'     => 'Invalid verification link.',
-    'EMAIL_VERIFIED'                => 'Your email has been successfully verified!',
+    // Password
+    'PASSWORD_RESET_SENT'       => 'A password reset link has been sent to your email.',
+    'PASSWORD_RESET_OK'         => 'Password reset successfully! You can now log in with your new password.',
+    'PASSWORD_RESET_FAILED'     => 'This password reset link is invalid or has expired.',
+    'PASSWORD_UPDATED'          => 'Password updated successfully.',
+    'INVALID_CURRENT_PASSWORD'  => 'The current password is incorrect.',
+    'PASSWORD_RESET_SUBJECT'    => 'Reset Your Password',
+    'PASSWORD_RESET_LINE'       => 'You are receiving this email because we received a password reset request for your account.',
+    'PASSWORD_RESET_ACTION'     => 'Reset Password',
+    'PASSWORD_RESET_EXPIRY'     => 'This password reset link will expire in 60 minutes.',
 
-    // Password related
-    'PASS_RESET_MSG'                => 'If an account exists with the provided email, a password reset link has been sent.',
-    'RESET_PASS_ERR'                => 'Password reset error!',
-    'RESET_PASS_OK'                 => 'Password updated successfully! You can now log in with your new password.',
-    'UNAUTH_PASS_UPDATE'            => 'Password update error!',
-    'PASS_UPDATE_CURRENT_PASS_ERR'  => 'Current password doesn\'t matched!',
-    'PASS_UPDATE'                   => 'Your password has been updated successfully.',
+    // Profile
+    'PROFILE_FETCHED'           => 'Profile retrieved successfully.',
+    'PROFILE_UPDATED'           => 'Profile updated successfully.',
+    'EMAIL_UPDATE_REQUESTED'    => 'Verification link sent to your new email address.',
+    'EMAIL_UPDATED'             => 'Email address updated successfully.',
+    'VERIFY_NEW_EMAIL_SUBJECT'  => 'Verify Your New Email Address',
+    'VERIFY_EMAIL_ACTION'       => 'Verify Email',
+    'STATUS_UPDATED'            => 'Account status updated successfully.',
+    'INVALID_STATUS'            => 'Invalid account status provided.',
 
-    // Profile related
-    'USER_INFO'                     => 'User profile details!',
-    'PROFILE_UPDATED'               => 'User profile updated successfully!',
-    'EMAIL_UPDATE_PASS_ERR'         => 'Password does not match!',
-    'EMAIL_UPDATE_VERIFICATION_SENT'=> 'Email updated. Please check your new inbox to verify the address.',
-    'EMAIL_UPDATE_INVALID_TOKEN'    => 'Invalid or expired verification link!',
-    'EMAIL_UPDATE_INVALID_USER'     => 'Invalid user for new email verification!',
-    'EMAIL_UPDATE_NOT_PENDING'      => 'No pending email change found!',
-    'NEW_EMAIL_VERIFIED'            => 'Email verified and updated successfully.',
-    // User status update
-    'ACTIVE'                        => 'Account has been activated!',
-    'REACTIVE'                      => 'Account has been reactivated!',
-    'INACTIVE'                      => 'Account inactivated successfully!',
-    'DELETE'                        => 'Account deleted successfully!',
-    'BANNED'                        => 'Account banded!',
+    // Logs
+    'LOGS_FETCHED'              => 'Activity logs retrieved successfully.',
 
-    // API Key related
-    'API_KEY_ALL'                   => 'All API keys of the user!',
-    'API_KEY_CREATE'                => 'API key created successfully. Store this token securely as it will not be shown again.',
-    'API_KEY_REGENERATE'            => 'API key regenerated successfully!',
-    'API_KEY_DELETE'                => 'API key revoked successfully!',
-    'API_INVALID_CREDENTIAL'        => 'Invalid or expired API credentials.',
-
-    // Common messages
-    'THROTTLE'                  => 'You are making too many requests. Please try again in a minute.',
-    'ERROR_COMMON'              => 'Something went wrong! Please try again.',
-    'SUCCESS_COMMON'            => 'Operation successful!',
-    'INVALID_REQUEST'           => 'Invalid request!',
-    'ROUTE_FALLBACK'            => 'Operation successful!',
+    // General
+    'ROUTE_NOT_FOUND'           => 'The requested route does not exist.',
+    'SERVER_ERROR'              => 'An unexpected error occurred. Please try again later.',
+    'UNAUTHENTICATED'           => 'You must be logged in to access this resource.',
+    'UNVERIFIED'                => 'Please verify your email address before accessing this resource.',
 ];
