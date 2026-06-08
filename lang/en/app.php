@@ -37,6 +37,12 @@ return [
     'STATUS_UPDATED'            => 'Account status updated successfully.',
     'INVALID_STATUS'            => 'Invalid account status provided.',
 
+    // Social auth
+    'SOCIAL_REDIRECT'           => 'OAuth redirect URL generated.',
+    'SOCIAL_AUTH_FAILED'        => 'Social authentication failed. Please try again.',
+    'SOCIAL_INVALID_PROVIDER'   => 'The requested authentication provider is not supported.',
+    'SOCIAL_EMAIL_UNVERIFIED'   => 'An account with this email exists but has not been verified. Please verify your email or log in with your password.',
+
     // Logs
     'LOGS_FETCHED'              => 'Activity logs retrieved successfully.',
 
