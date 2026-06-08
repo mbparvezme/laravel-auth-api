@@ -5,6 +5,8 @@
 .env.production
 .phpactor.json
 .phpunit.result.cache
+/.agents
+/.claude
 /.codex
 /.cursor/
 /.kiro/
