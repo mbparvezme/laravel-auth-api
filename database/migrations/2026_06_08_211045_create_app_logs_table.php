@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('app_logs', function (Blueprint $table) {
             $table->id();
-            $table->tinyText('user', 10);
-            $table->string('action', 32);
-            $table->json('data');
-            $table->timestamps();
-            $table->dropColumn('updated_at');
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+            $table->string('action', 64);
+            $table->json('data')->nullable();
+            $table->boolean('user_visible')->default(false);
+            $table->timestamp('created_at')->useCurrent();
         });
     }
 
