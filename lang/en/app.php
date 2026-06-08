@@ -37,6 +37,12 @@ return [
     'STATUS_UPDATED'            => 'Account status updated successfully.',
     'INVALID_STATUS'            => 'Invalid account status provided.',
 
+    // Multi-device
+    'DEVICES_FETCHED'           => 'Active sessions retrieved successfully.',
+    'DEVICE_REVOKED'            => 'Session revoked successfully.',
+    'DEVICE_NOT_FOUND'          => 'Session not found.',
+    'DEVICES_OTHERS_REVOKED'    => 'All other sessions have been revoked.',
+
     // API keys
     'API_KEYS_FETCHED'          => 'API keys retrieved successfully.',
     'API_KEY_CREATED'           => 'API key created. Store it securely — it will not be shown again.',
