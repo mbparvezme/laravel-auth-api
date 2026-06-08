@@ -55,6 +55,22 @@ return [
     'SOCIAL_INVALID_PROVIDER'   => 'The requested authentication provider is not supported.',
     'SOCIAL_EMAIL_UNVERIFIED'   => 'An account with this email exists but has not been verified. Please verify your email or log in with your password.',
 
+    // Magic link
+    'MAGIC_LINK_SENT'           => 'If this email is registered, a magic login link has been sent.',
+    'MAGIC_LINK_INVALID'        => 'This magic link is invalid or has expired.',
+    'MAGIC_LINK_VERIFIED'       => 'Login successful!',
+    'MAGIC_LINK_SUBJECT'        => 'Your Magic Login Link',
+    'MAGIC_LINK_LINE'           => 'Click the button below to log in to your account. This link expires in 15 minutes.',
+    'MAGIC_LINK_ACTION'         => 'Log In',
+    'MAGIC_LINK_EXPIRY'         => 'If you did not request this link, no further action is required.',
+
+    // IP rules
+    'IP_BLOCKED'                => 'Your IP address is not permitted to access this service.',
+    'IP_RULES_FETCHED'          => 'IP rules retrieved successfully.',
+    'IP_RULE_ADDED'             => 'IP rule added successfully.',
+    'IP_RULE_REMOVED'           => 'IP rule removed successfully.',
+    'IP_RULE_NOT_FOUND'         => 'IP rule not found.',
+
     // Logs
     'LOGS_FETCHED'              => 'Activity logs retrieved successfully.',
 

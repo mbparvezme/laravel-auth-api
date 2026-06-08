@@ -13,6 +13,7 @@ class AppLogService
         'PROFILE_UPDATED', 'EMAIL_UPDATE_REQUESTED', 'EMAIL_UPDATED',
         'STATUS_UPDATED', 'SOCIAL_LOGIN', 'SOCIAL_REGISTER',
         'API_KEY_CREATED', 'API_KEY_REVOKED',
+        'MAGIC_LINK_LOGIN',
     ];
 
     public function log(string $action, ?int $userId = null, array $extra = []): void
